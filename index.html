@@ -47,10 +47,10 @@
   <h1>BoyPhongsakorn Group</h1>
   <div class="row">
     <div class="col-sm">
-      <img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)">
+      <img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy">
     </div>
     <div class="col-sm">
-      <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)">
+      <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
     </div>
     <a href="" style="text-decoration:none"><i class="fas fa-times"></i> Clear</a>
   </div>
@@ -254,6 +254,8 @@ var xselect = "unselect";
 var yselect = "unselect";
 
 function show(a) {
+  var imgx = document.getElementById("imgitisboy");
+  var imgy = document.getElementById("imgQuadB");
   var x = document.getElementById("itisboy");
   var y = document.getElementById("QuadB");
   var z = document.getElementById("GithubSource");
@@ -261,27 +263,33 @@ function show(a) {
   if (a === 1 && yselect === "select" && xselect === "unselect") {
     x.style.display = "block";
     xselect = "select";
+    imgx.style.border = "3px solid #007bff";
   } else if (a === 1 && yselect === "select" && xselect === "select") {
     x.style.display = "none";
     xselect = "unselect";
+    imgx.style.border = "none";
   } else if (a === 1) {
     y.style.display = "none";
     x.style.display = "block";
     z.style.display = "none";
     xselect = "select";
+    imgx.style.border = "3px solid #007bff";
   } 
 
   if (a === 2 && yselect === "unselect" && xselect === "select") {
     y.style.display = "block";
     yselect = "select";
+    imgy.style.border = "3px solid #007bff";
   } else if (a === 2 && yselect === "select" && xselect === "select") {
     y.style.display = "none";
     yselect = "unselect";
+    imgx.style.border = "none";
   } else if (a === 2) {
     y.style.display = "block";
     x.style.display = "none";
     z.style.display = "none";
     yselect = "select";
+    imgy.style.border = "3px solid #007bff";
   }
 
 }
