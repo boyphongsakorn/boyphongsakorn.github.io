@@ -15,6 +15,9 @@
       .col-sm {
         text-align: center;
       }
+      h1 {
+        font-size: 2rem;
+      }
     }
     </style>
 </head>
@@ -57,7 +60,6 @@
     <div class="col-sm">
       <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
     </div>
-    <a href="" style="text-decoration:none"><i class="fas fa-times"></i> Clear</a>
   </div>
   <!-- end select group -->
   <div id="QuadB">
@@ -273,6 +275,12 @@ function show(a) {
     x.style.display = "none";
     xselect = "unselect";
     imgx.style.border = "none";
+  } else if (a === 1 && yselect === "unselect" && xselect === "select") {
+    y.style.display = "block";
+    x.style.display = "block";
+    z.style.display = "block";
+    xselect = "unselect";
+    imgx.style.border = "none";
   } else if (a === 1) {
     y.style.display = "none";
     x.style.display = "block";
@@ -287,6 +295,12 @@ function show(a) {
     imgy.style.border = "3px solid #007bff";
   } else if (a === 2 && yselect === "select" && xselect === "select") {
     y.style.display = "none";
+    yselect = "unselect";
+    imgy.style.border = "none";
+  } else if (a === 2 && yselect === "select" && xselect === "unselect") {
+    y.style.display = "block";
+    x.style.display = "block";
+    z.style.display = "block";
     yselect = "unselect";
     imgy.style.border = "none";
   } else if (a === 2) {
