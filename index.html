@@ -12,6 +12,10 @@ body {
 	font-family: 'Mitr', sans-serif;
 }
 
+#mobile {
+  display: none;
+}
+
 @media (max-width: 767px) {
   .col-sm {
     text-align: center;
@@ -22,11 +26,23 @@ body {
   #footer {
     font-size: 15px;
   }
+  #mobile {
+  display: block;
+  }
+  #tablet {
+  display: none;
+  }
 }
 
 @media (max-width: 393px) {
   #footer {
     font-size: 13px;
+  }
+  #mobile {
+  display: block;
+  }
+  #tablet {
+  display: none;
   }
 }
 </style>
@@ -34,7 +50,7 @@ body {
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href=""><img src="https://cdn.pbrd.co/images/HnvFFAX.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    Phongsakorn Boy Wisetthon</a>
+    Phongsakorn Wisetthon</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -63,14 +79,18 @@ body {
 </nav>
 <div class="container" style="margin-top: 15px;">
   <h1>BoyPhongsakorn Group</h1>
-  <!--div class="row">
-    <div class="col-sm"-->
+  <div class="row" id="mobile">
+    <div class="col-sm">
       <img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy">
-    <!--/div>
-    <div class="col-sm"-->
+    </div>
+    <div class="col-sm">
       <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
-    <!--/div>
-</div-->
+    </div>
+</div>
+<div id="tablet">
+<img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy">
+<img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
+</div>
   <!-- end select group -->
   <div id="QuadB">
   <h1>Software</h1>
