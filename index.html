@@ -81,15 +81,15 @@ body {
   <h1>BoyPhongsakorn Group</h1>
   <div class="row" id="mobile">
     <div class="col-sm">
-      <img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy">
+      <img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy1">
     </div>
     <div class="col-sm">
-      <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
+      <img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB1">
     </div>
 </div>
 <div id="tablet">
-<img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy">
-<img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB">
+<img src="image/บอยเอง.png" alt="บอยเอง" onclick="show(1)" id="imgitisboy2">
+<img src="image/quadbsoftware.png" alt="Quad B Software" onclick="show(2)" id="imgQuadB2">
 </div>
   <!-- end select group -->
   <div id="QuadB">
@@ -289,8 +289,10 @@ var xselect = "unselect";
 var yselect = "unselect";
 
 function show(a) {
-  var imgx = document.getElementById("imgitisboy");
-  var imgy = document.getElementById("imgQuadB");
+  var imgx1 = document.getElementById("imgitisboy1");
+  var imgy1 = document.getElementById("imgQuadB1");
+  var imgx2 = document.getElementById("imgitisboy2");
+  var imgy2 = document.getElementById("imgQuadB2");
   var x = document.getElementById("itisboy");
   var y = document.getElementById("QuadB");
   var z = document.getElementById("GithubSource");
@@ -298,45 +300,53 @@ function show(a) {
   if (a === 1 && yselect === "select" && xselect === "unselect") {
     x.style.display = "block";
     xselect = "select";
-    imgx.style.border = "3px solid #007bff";
+    imgx1.style.border = "3px solid #007bff";
+    imgx2.style.border = "3px solid #007bff";
   } else if (a === 1 && yselect === "select" && xselect === "select") {
     x.style.display = "none";
     xselect = "unselect";
-    imgx.style.border = "none";
+    imgx1.style.border = "none";
+    imgx2.style.border = "none";
   } else if (a === 1 && yselect === "unselect" && xselect === "select") {
     y.style.display = "block";
     x.style.display = "block";
     z.style.display = "block";
     xselect = "unselect";
-    imgx.style.border = "none";
+    imgx1.style.border = "none";
+    imgx2.style.border = "none";
   } else if (a === 1) {
     y.style.display = "none";
     x.style.display = "block";
     z.style.display = "none";
     xselect = "select";
-    imgx.style.border = "3px solid #007bff";
+    imgx1.style.border = "3px solid #007bff";
+    imgx2.style.border = "3px solid #007bff";
   }  
 
   if (a === 2 && yselect === "unselect" && xselect === "select") {
     y.style.display = "block";
     yselect = "select";
-    imgy.style.border = "3px solid #007bff";
+    imgy1.style.border = "3px solid #007bff";
+    imgy2.style.border = "3px solid #007bff";
   } else if (a === 2 && yselect === "select" && xselect === "select") {
     y.style.display = "none";
     yselect = "unselect";
-    imgy.style.border = "none";
+    imgy1.style.border = "none";
+    imgy2.style.border = "none";
   } else if (a === 2 && yselect === "select" && xselect === "unselect") {
     y.style.display = "block";
     x.style.display = "block";
     z.style.display = "block";
     yselect = "unselect";
-    imgy.style.border = "none";
+    imgy1.style.border = "none";
+    imgy2.style.border = "none";
   } else if (a === 2) {
     y.style.display = "block";
     x.style.display = "none";
     z.style.display = "none";
     yselect = "select";
-    imgy.style.border = "3px solid #007bff";
+    imgy1.style.border = "3px solid #007bff";
+    imgy2.style.border = "3px solid #007bff";
   }
 
 }
