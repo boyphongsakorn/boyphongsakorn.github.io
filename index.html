@@ -12,21 +12,38 @@
   <style>
   body, html {
     height: 100%;
+    font-family: 'Mitr', sans-serif;
+    color: whitesmoke;
+  }
+  .row {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .col-sm {
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
   }
   </style>
 </head>
 <body>
 	
 <div class="row">
-    <div class="col-sm" style="height: 100%;">
-      One of three columns
-    </div>
-    <div class="col-sm" style="height: 100%;">
-      One of three columns
-    </div>
-    <div class="col-sm" style="height: 100%;">
-      One of three columns
-    </div>
+  <div class="col-sm" style="background-image: url(image/saox_bg.png);background-position: bottom;background-position-x: left;background-repeat: no-repeat;background-size: cover;">
+    <img src="https://raw.githubusercontent.com/boyphongsakorn/saox/master/img/saoxlogo.png" width="125px">
+    SAOX
+  </div>
+  <div class="col-sm">
+    <img src="https://raw.githubusercontent.com/boyphongsakorn/YTPC/master/img/youtubepcappicon.png" width="125px">
+    YTPC
+  </div>
+  <div class="col-sm">
+    smprice
+  </div>
 </div>
 	
 <!-- Optional JavaScript -->
