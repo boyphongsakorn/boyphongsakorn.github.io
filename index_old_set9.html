@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWisetthon.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mitr&family=Unbounded:wght@900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <!-- style>
+        body {
+            height: 100%;
+        }
+
+        div {
+            background-image: url(https://imgul.teamquadb.in.th/images/2023/02/13/test2023.png);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-family: 'Unbounded', cursive;
+            /* background-size: cover; */
+            /* background-attachment: fixed; */
+            background-position: 30% 10px;
+            animation: marquee 30s infinite linear;
+        }​
+
+        .container {
+            /* width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center; */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+        }
+
+        .text {
+            /* font-size: 100%; */
+            text-align: center;
+        }
+
+        .text2 {
+            text-align: center;
+        }
+
+        @keyframes marquee {
+            0% {
+                background-position: 0;
+            }
+
+            100% {
+                background-position: -1190px;
+            }
+        }
+    </style -->
+    <style>
+        body {
+            font-family: 'Mitr', cursive;
+        }
+
+        .divfull {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: white;
+            z-index: 999;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divtexttitle {
+            background-image: url('https://img.gs/fhcphvsghs/quality=low/https://imgul.teamquadb.in.th/images/2023/02/13/test2023.png');
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-family: 'Unbounded', cursive;
+            background-size: contain;
+            background-position: center;
+            animation: marquee 30s infinite linear;
+        }
+
+        @keyframes marquee {
+            0% {
+                background-position: 0;
+            }
+
+            100% {
+                background-position: -1190px;
+            }
+        }
+    </style>
+</head>
+
+<body onresize="myFunction()">
+    <div id="fullscreen" class="divfull">
+        <div class="divtexttitle" id="boytwo"><p class="d-inline divtexttitle" id="boygone">Boy</p>P<p class="d-inline divtexttitle" id="hgone">hongsakorn</p><p class="d-none divtexttitle" id="wapp">Wisetthon</p></div>
+    </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid" id="nav">
+            <a class="navbar-brand" href="#"
+                style="position: absolute;background-image: url('https://img.gs/fhcphvsghs/quality=low/https://imgul.teamquadb.in.th/images/2023/02/13/test2023.png');background-clip: text;-webkit-background-clip: text;color: transparent;font-family: 'Unbounded', cursive;background-size: contain;background-position: center;animation: marquee 30s infinite linear;">
+                <!-- BoyPhongsakorn -->
+                PWisetthon
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://boyphongsakorn.wordpress.com">บล็อก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://archive.pwisetthon.com/">งานเก่า</a>
+                    </li>
+                    <!--li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">Disabled</a>
+              </li-->
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid py-3 bg-dark bg-gradient text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    ตรวจสลากฯของคุณ
+                    <div class="input-group my-3">
+                        <select class="form-select" id="setlot">
+                            <option selected>กำลังโหลดวันในการออกสลากฯ</option>
+                        </select>
+                        <input type="text" class="form-control" placeholder="เลขสลากฯของคุณ" aria-label="เลขสลากฯของคุณ"
+                            aria-describedby="button-addon2" id="number">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2"
+                            onclick="checklotto()">ตรวจ</button>
+                    </div>
+                    <div id="loadingdisplay" class="my-2" style="display:none">
+                        <i class="fas fa-money-bill-wave fa-spin fa-2x"></i> กำลังโหลดโอกาสในการรวย
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" role="alert" id="resultsdisplay" style="display:none">
+                        ไม่ถูกรางวัล
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div class="row" id="newsdisplay">
+                        <i class="fas fa-money-bill-wave fa-spin fa-2x"></i> กำลังโหลดข่าวสาร
+                        <!-- <div class="col-4">
+                            <div class="card">
+                                <img src="..." class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the bulk of the card's content.</p>
+                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col text-center my-auto">
+                    <i class="fas fa-laptop-code"></i> <a href="https://rapidapi.com/boyphongsakorn/api/thai-lottery1"
+                        class="text-decoration-none">
+                        <h2>สลากกินแบ่งรัฐบาลฯ API</h2>
+                    </a>
+                    API สลากกินแบ่งรัฐบาลฯ ในรูปแบบ JSON
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-light bg-gradient">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center my-auto">
+                    <i class="fas fa-laptop-code"></i> <a href="https://rapidapi.com/boyphongsakorn/api/oil-thai-price"
+                        class="text-decoration-none">
+                        <h2>API ราคาน้ำมัน</h2>
+                    </a>
+                    API ราคาน้ำมัน ในรูปแบบ JSON
+                </div>
+                <div class="col text-center">
+                    <img data-src="https://img.gs/fhcphvsghs/quality=low/https://topapi.pwisetthon.com/image"
+                        class="lazy w-50 rounded-2 shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-dark bg-gradient text-white proto">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                        <img data-src="https://lotimg.pwisetthon.com/"
+                        class="lazy w-50 rounded-2 shadow">
+                </div>
+                <div class="col text-center my-auto">
+                    <i class="fas fa-laptop-code"></i><br>
+                    <a href="https://rapidapi.com/boyphongsakorn/api/thai-lottery-result-image/"
+                        class="text-decoration-none">
+                        <h2>API รูปสรุปสลากกิินแบ่งรัฐบาล</h2>
+                    </a><br>
+                    API รูปสรุปสลากกิินแบ่งรัฐบาล สำหรับนำไปใช้ในการสรุปสลากฯ หรืออื่นๆ
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-light bg-gradient">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center my-auto">
+                    <i class="fas fa-laptop-code"></i> <a href="https://mkrm.pwisetthon.com/"
+                        class="text-decoration-none">
+                        <h2>Request เพลง</h2>
+                    </a>
+                    ระบบขอเพลง ตามร้าน Cafe, หมูทะ หรือไปทำอย่างอื่น
+                </div>
+                <div class="col text-center">
+                    <img data-src="https://img.gs/fhcphvsghs/quality=low/https://screenshot-xi.vercel.app/api?url=https://mkrm.pwisetthon.com&width=1920&height=1080"
+                        class="lazy w-75 rounded-2 shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-dark bg-gradient text-white proto">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                        <img data-src="https://i.imgur.com/c9LcVmZ.gif"
+                        class="lazy w-50 rounded-2 shadow">
+                </div>
+                <div class="col text-center my-auto">
+                    <i class="fab fa-discord"></i><br>
+                    <a href="https://discordbot.pwisetthon.com"
+                        class="text-decoration-none d-inline-flex">
+                        <h2 style="background-image: url('https://img.gs/fhcphvsghs/quality=low/https://imgul.teamquadb.in.th/images/2023/02/13/test2023.png');background-clip: text;-webkit-background-clip: text;color: transparent;font-family: 'Unbounded', cursive;background-size: contain;background-position: center;animation: marquee 30s infinite linear;margin-right: 5px;">PWisetthon.com</h2><h2> Discord Bot</h2>
+                    </a><br>
+                    Discord Bot ของ PWisetthon.com แจ้งเตือนสลากกินแบ่งฯ,ราคาน้ำมัน และอื่นๆ
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-light bg-gradient">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center my-auto">
+                    <i class="fas fa-laptop-code"></i> <a href="https://bpminecraft.com/"
+                        class="text-decoration-none">
+                        <h2>BPMinecraft</h2>
+                    </a>
+                    เว็บไซต์เกี่ยวกับ Minecraft
+                </div>
+                <div class="col text-center">
+                    <img data-src="https://img.gs/fhcphvsghs/quality=low/https://screenshot-xi.vercel.app/api?url=https://bpminecraft.com&width=1920&height=1080"
+                        class="lazy w-75 rounded-2 shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-dark bg-gradient text-white proto">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <!-- <img src="https://res.cloudinary.com/dstnfzzu4/image/upload/v1621259326/quadb_lott/Capture5_f1cjf7.png"
+                        class="w-50 rounded-2 shadow"> -->
+                        <img data-src="https://img.gs/fhcphvsghs/quality=low/https://screenshot-xi.vercel.app/api?url=https://bussy.pwisetthon.com&width=1920&height=1080"
+                        class="lazy w-50 rounded-2 shadow">
+                </div>
+                <div class="col text-center my-auto">
+                    <i class="fab fa-discord"></i><br>
+                    <a href="https://bussy.pwisetthon.com"
+                        class="text-decoration-none d-inline-flex">
+                        <h2 style="font-family: 'Unbounded', cursive;">Bussy.</h2><h2 style="background-image: url('https://img.gs/fhcphvsghs/quality=low/https://imgul.teamquadb.in.th/images/2023/02/13/test2023.png');background-clip: text;-webkit-background-clip: text;color: transparent;font-family: 'Unbounded', cursive;background-size: contain;background-position: center;animation: marquee 30s infinite linear;margin-right: 5px;">PWisetthon.com</h2>
+                    </a><br>
+                    ตารางวันทำงาน
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-3 bg-light bg-gradient">
+        <div class="container">
+            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col text-center my-auto">
+                            <!-- <i class="fas fa-laptop-code"></i> <a href="https://mccplog.pwisetthon.com/"
+                                class="text-decoration-none">
+                                <h2>เว็บ Log เซิฟเวอร์ Minecraft</h2>
+                            </a>
+                            เว็บดู Log เซิฟเวอร์ Minecraft ที่สร้างด้วย Svelte -->
+                            Power for Build Website
+                        </div>
+                        <div class="col text-center">
+                            <a href="https://www.pathosting.co.th/"><img data-src="https://www.pathosting.co.th/system/application/modules/lnwhost/_images/theme2020/logo_white.png" class="lazy shadow-sm p-1 mb-1 rounded bg-dark bg-gradient" style="height: 50px"></a>
+                            <a href="https://vercel.com/"><img data-src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Vercel_logo_black.svg/2560px-Vercel_logo_black.svg.png" class="lazy shadow-sm p-1 mb-1 rounded bg-light bg-gradient" style="height: 50px"></a>
+                            <a href="https://www.netlify.com/"><img data-src="https://www.netlify.com/v3/img/components/full-logo-dark.png" class="lazy shadow-sm p-1 mb-1 rounded bg-dark bg-gradient" style="height: 50px"></a>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="row">
+                        <div class="col text-center my-auto">
+                            <!-- <i class="fas fa-laptop-code"></i> <a href="https://mccplog.pwisetthon.com/"
+                                class="text-decoration-none">
+                                <h2>เว็บ Log เซิฟเวอร์ Minecraft</h2>
+                            </a>
+                            เว็บดู Log เซิฟเวอร์ Minecraft ที่สร้างด้วย Svelte -->
+                            Power for Build API
+                        </div>
+                        <div class="col text-center">
+                            <a href="https://rapidapi.com/user/boyphongsakorn"><img data-src="https://rapidapi.com/static-assets/default/dark-logo-78e48dc1-ca3f-4d67-a6f5-74032f439c8b.svg" class="lazy shadow-sm p-1 mb-1 rounded bg-dark bg-gradient" style="height: 50px"></a>
+                            <a href="https://workers.cloudflare.com/"><img data-src="https://miro.medium.com/max/1400/0*QHI3dqAzwtLiKCAV.png" class="lazy shadow-sm p-1 mb-1 rounded bg-dark bg-gradient" style="height: 50px"></a>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="row">
+                        <div class="col text-center my-auto">
+                            <!-- <i class="fas fa-laptop-code"></i> <a href="https://mccplog.pwisetthon.com/"
+                                class="text-decoration-none">
+                                <h2>เว็บ Log เซิฟเวอร์ Minecraft</h2>
+                            </a>
+                            เว็บดู Log เซิฟเวอร์ Minecraft ที่สร้างด้วย Svelte -->
+                            Power for Build Cloud
+                        </div>
+                        <div class="col text-center">
+                            <a href="https://www.vultr.com/?ref=6910944"><img data-src="https://www.vultr.com/media/logo_ondark.png" class="lazy shadow-sm p-1 mb-1 rounded bg-dark bg-gradient" style="height: 50px"></a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div>
+        GREATNESS AMONGST YOU<br>
+        PHONGSAKORN WISETTHON
+    </div> -->
+    <!-- <div class="container">
+        <p class="text" id="text">
+            GREATNESS AMONGST YOU
+        </p>
+        <p class="text" id="text2">
+            PHONGSAKORN WISETTHON
+        </p>
+     </div> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
+        integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"></script>
+    <script>
+        function myFunction() {
+            // var windowWidth = window.innerWidth / 25;
+            // document.getElementById("text").style.fontSize = windowWidth + "px"
+            // document.getElementById("text2").style.fontSize = windowWidth + "px"
+        }
+        window.onload = (event) => {
+            var lazyLoadInstance = new LazyLoad({
+                
+            });
+            lazyLoadInstance.update();
+
+            // anime({
+            //     targets: '.text',
+            //     translateX: 250,
+            // });
+            // windowWidth = window.innerWidth / 25;
+            // document.getElementById("text").style.fontSize = windowWidth + "px"
+            // document.getElementById("text2").style.fontSize = windowWidth + "px"
+            // anime({
+            //     targets: '.navbar-brand',
+            //     translateX: 250,
+            //     scale: 2,
+            //     rotate: '1turn'
+            // });
+
+            // Zoom in animation
+            // anime({
+            //     targets: '.navbar-brand',
+            //     fontSize: '5rem',
+            //     easing: 'easeInOutQuad',
+            //     duration: 1000
+            // });
+
+            // Zoom out animation
+            // anime({
+            //     targets: '.navbar-brand',
+            //     fontSize: '5rem',
+            //     easing: 'easeInOutQuad',
+            //     duration: 1000,
+            //     delay: 2000 // Wait 2 seconds before starting the zoom out animation
+            // });
+
+            // Get window dimensions
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            let fontpx = 10
+
+            if (windowWidth <= 1440) {
+                fontpx = windowWidth/205
+            }
+
+            anime.set('.navbar-brand', {
+                fontSize: fontpx + 'rem'
+            });
+
+            anime.set('#boytwo', {
+                fontSize: fontpx + 'rem'
+            });
+
+            // Get company name dimensions
+            const companyName = document.querySelector('.navbar-brand');
+            const companyNameWidth = companyName.offsetWidth;
+            const companyNameHeight = companyName.offsetHeight;
+
+            // Calculate the position of the company name to center it
+            const companyNameX = (windowWidth - companyNameWidth) / 2;
+            const companyNameY = ((windowHeight - companyNameHeight) / 2) + 100;
+
+            anime.set('.navbar-brand', {
+                translateX: companyNameX,
+                translateY: companyNameY
+            });
+
+            // anime({
+            //     targets: '#boy',
+            //     opacity: 0,
+            //     translateY: -100,
+            //     direction: 'reverse',
+            //     easing: 'linear',
+            //     delay: function(el, i) {
+            //         return 600 * i;
+            //     },
+            //     //endDelay: 1000
+            // });
+
+            // anime({
+            //     targets: '#boy',
+            //     //  translateX: 250,
+            //     translateY: 250,
+            //     direction: 'alternate',
+            //     loop: true,
+            //     easing: 'easeInOutExpo',
+            //     //delay: 5009
+            // })
+
+            anime({
+                targets: '#boygone',
+                opacity: 0,
+                translateY: 100,
+                easing: 'linear',
+                delay: 100,
+                update: function (anim) {
+                    var width = Math.max(Math.floor(anim.progress) - 10, 0);
+                    console.log(document.getElementById('boygone').style.width = width + 'px');
+                }
+            }).finished.then(() => {
+                document.getElementById('boygone').setAttribute('style', 'display:none !important');
+            })
+
+            anime({
+                targets: '#hgone',
+                opacity: 0,
+                translateY: 100,
+                easing: 'linear',
+                delay: 300,
+            }).finished.then(() => {
+                document.getElementById('hgone').setAttribute('style', 'display:none !important');
+                document.getElementById('wapp').setAttribute('style', 'display:inline !important');
+                anime({
+                    targets: '#wapp',
+                    opacity: 0,
+                    translateY: 100,
+                    easing: 'linear',
+                    direction: 'reverse',
+                })
+            })
+
+            anime({
+                targets: '#fullscreen',
+                opacity: 0,
+                duration: 100,
+                easing: 'linear',
+                direction: 'alternate',
+                loop: false,
+                delay: 700,
+                complete: function(anim) {
+                    document.getElementById('fullscreen').style.display = 'none';
+                }
+            })
+
+            // select the div element to animate
+            // const boyDiv = document.getElementById('boy');
+
+            // // define the animation properties using Anime.js
+            // anime({
+            //     targets: boyDiv,
+            //     // opacity: 100,
+            //     translateX: -100,
+            //     duration: 1000,
+            //     easing: 'easeOutQuint'
+            // });
+
+            // anime({
+            //     targets: '.navbar-brand',
+            //     translateX: 250,
+            //     direction: 'alternate',
+            //     //loop: true,
+            //     easing: 'cubicBezier(.5, .05, .1, .3)'
+            // }).finished.then(() => {
+
+            anime({
+                targets: '.navbar-brand',
+                fontSize: '1.25rem',
+                easing: 'easeOutElastic',
+                duration: 1000,
+                delay: 800, // Wait 2 seconds before starting the zoom out animation
+                translateX: 0,
+                translateY: 0,
+                update: function (anim) {
+                    //console.log(Math.round(anim.progress))
+                    //progressLogEl.value = 'progress : '+Math.round(anim.progress)+'%';
+                    if (46 < parseInt(anim.progress)) {
+                        //change .navbar-brand position to static
+                        document.querySelector('.navbar-brand').style.position = 'static';
+                        //change class id nav to container
+                        document.getElementById('nav').classList.remove('container-fluid');
+                        document.getElementById('nav').classList.add('container');
+                    }
+                    if (55 < parseInt(anim.progress)) {
+                        //change text in .navbar-brand to PWisetthon.com
+                        document.querySelector('.navbar-brand').innerHTML = '<p class="d-inline">PWisetthon</p><p class="d-none" id="pcom">.com</p>';
+                    }
+                }
+            }).finished.then(() => {
+                document.getElementById('pcom').classList.remove('d-none');
+                document.getElementById('pcom').classList.add('d-inline');
+                anime({
+                    targets: '#pcom',
+                    opacity: 0,
+                    easing: 'linear',
+                    direction: 'reverse',
+                    delay: function(el, i) {
+                        document.getElementById('pcom').innerText = '.com'
+                        return 60 * i;
+                    },
+                })
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "https://thai-lottery1.p.rapidapi.com/god?format=combothtext",
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-key": "c34ed3c573mshbdf38eb6814e7a7p1e0eedjsnab10f5aef137",
+                        "x-rapidapi-host": "thai-lottery1.p.rapidapi.com"
+                    }
+                };
+
+                $.ajax(settings).done(function (response) {
+                    /*alldate = response
+                    loadform(alldate)*/
+                    document.getElementById("setlot").innerHTML = ""
+                    response.forEach((element, key, arr) => {
+                        if (key == response.length - 1) {
+                            document.getElementById("setlot").innerHTML += "<option value=\"" + element[0] + "\" selected>" + element[1] + "</option>";
+                        } else {
+                            document.getElementById("setlot").innerHTML += "<option value=\"" + element[0] + "\">" + element[1] + "</option>";
+                        }
+                    });
+                    console.log(response)
+                });
+
+                //fetch https://thai-lottery1.p.rapidapi.com/lotnews
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "https://thai-lottery1.p.rapidapi.com/lotnews?count=2",
+                    "method": "GET",
+                    "headers": {
+                        "x-rapidapi-key": "c34ed3c573mshbdf38eb6814e7a7p1e0eedjsnab10f5aef137",
+                        "x-rapidapi-host": "thai-lottery1.p.rapidapi.com"
+                    }
+                };
+
+                fetch(settings.url, settings)
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (response) {
+                        /*console.log(response);
+                        document.getElementById("setlot").innerHTML = ""*/
+                        document.getElementById("newsdisplay").innerHTML = ""
+                        response.forEach((element, key, arr) => {
+                            /*if (key == response.length-1) {
+                                document.getElementById("setlot").innerHTML += "<option value=\"" + element[0] + "\" selected>" + element[1] + "</option>";
+                            } else {
+                                document.getElementById("setlot").innerHTML += "<option value=\"" + element[0] + "\">" + element[1] + "</option>";
+                            }*/
+                            if (element["image"]) {
+                                document.getElementById("newsdisplay").innerHTML += "<div class=\"col-6\"><div class=\"card text-bg-light\"><img src=\"https://img.gs/fhcphvsghs/1200x675,crop/" + element["image"] + "\" class=\"card-img-top\" alt=\"...\"><div class=\"card-body\"><h5 class=\"card-title\">" + element["title"] + "</h5><p class=\"card-text\">" + element["description"] + "</p><a href=\"" + element["link"] + "\" class=\"btn btn-primary\">กดเพิ่มดูข่าวเพิ่มเติม</a></div></div></div>"
+                            } else {
+                                document.getElementById("newsdisplay").innerHTML += "<div class=\"col-6\"><div class=\"card text-bg-light\"><img src=\"https://img.gs/fhcphvsghs/1200x675,crop/" + element["image"] + "\" class=\"card-img-top d-none\" alt=\"...\"><div class=\"card-body\"><h5 class=\"card-title\">" + element["title"] + "</h5><p class=\"card-text\">" + element["description"] + "</p><a href=\"" + element["link"] + "\" class=\"btn btn-primary\">กดเพิ่มดูข่าวเพิ่มเติม</a></div></div></div>"
+                            }
+                        });
+                        /*if (response["image"]) {
+                            document.getElementById("newsdisplay").innerHTML += "<img src=\"" + response["image"] + "\" style=\"width:100%;height:100%;\">"
+                        } else {
+                            document.getElementById("newsdisplay").innerHTML += "<img src=\"" + response["image"] + "\" style=\"width:100%;height:100%;\">"
+                        }*/
+                        console.log(response)
+                    });
+            })
+            // }).finished.then(() => {
+            //     //change .navbar-brand position to static
+            //     document.querySelector('.navbar-brand').style.position = 'static';
+            //     //change class id nav to container
+            //     document.getElementById('nav').classList.remove('container-fluid');
+            //     document.getElementById('nav').classList.add('container');
+            // })
+
+            // });
+            // });
+
+            // Animate the company name to the center of the screen
+            /*anime({
+                targets: '.navbar-brand',
+                translateX: companyNameX,
+                translateY: companyNameY,
+                //duration: 1000,
+                // easing: 'easeInOutQuad',
+                fontSize: '10rem'
+            }).finished.then(() => {
+                // anime({
+                //     targets: '.navbar-brand',
+                //     translateX: 250,
+                //     direction: 'alternate',
+                //     //loop: true,
+                //     easing: 'cubicBezier(.5, .05, .1, .3)'
+                // }).finished.then(() => {
+                    anime({
+                        targets: '.navbar-brand',
+                        fontSize: '1.25rem',
+                        easing: 'easeOutElastic',
+                        duration: 10000,
+                        //delay: 2000 // Wait 2 seconds before starting the zoom out animation
+                        translateX: 0,
+                        translateY: 0
+                    })
+                    //change .navbar-brand position to static
+                    document.querySelector('.navbar-brand').style.position = 'static';
+                    //change class id nav to container
+                    document.getElementById('nav').classList.remove('container-fluid');
+                    document.getElementById('nav').classList.add('container');
+                //});
+            });*/
+
+            // anime({
+            //     targets: '.navbar-brand',
+            //     fontSize: '5rem',
+            //     easing: 'easeInOutQuad',
+            //     duration: 1000,
+            //     //delay: 2000 // Wait 2 seconds before starting the zoom out animation
+            // }).finished.then(() => {
+            //     anime({
+            //         targets: '.navbar-brand',
+            //         translateX: 250,
+            //         direction: 'alternate',
+            //         //loop: true,
+            //         easing: 'cubicBezier(.5, .05, .1, .3)'
+            //     }).finished.then(() => {
+            //         anime({
+            //             targets: '.navbar-brand',
+            //             fontSize: '1.25rem',
+            //             easing: 'easeOutElastic',
+            //             duration: 5000,
+            //             //delay: 2000 // Wait 2 seconds before starting the zoom out animation
+            //         })
+            //     });
+            // });
+        }
+
+        function checklotto() {
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://thai-lottery1.p.rapidapi.com/checklottery?by=" + document.getElementById("setlot").value + "&search=" + document.getElementById("number").value,
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-key": "c34ed3c573mshbdf38eb6814e7a7p1e0eedjsnab10f5aef137",
+                    "x-rapidapi-host": "thai-lottery1.p.rapidapi.com"
+                }
+            };
+            document.getElementById("resultsdisplay").style.display = "none"
+            document.getElementById("loadingdisplay").style.display = "block"
+            fetch("https://thai-lottery1.p.rapidapi.com/checklottery?by=" + document.getElementById("setlot").value + "&search=" + document.getElementById("number").value, {"headers": {
+                    "x-rapidapi-key": "c34ed3c573mshbdf38eb6814e7a7p1e0eedjsnab10f5aef137",
+                    "x-rapidapi-host": "thai-lottery1.p.rapidapi.com"
+                }}).then(response => response.text())
+            .then(data => {
+                document.getElementById("loadingdisplay").style.display = "none"
+                document.getElementById("resultsdisplay").innerText = "คุณไม่ถูกรางวัล"
+                //document.getElementById("resultsdisplay").innerHTML = "คุณไม่ถูกรางวัล <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>"
+                document.getElementById("resultsdisplay").style.display = "block"
+                document.getElementById("resultsdisplay").classList.remove("alert-success")
+                document.getElementById("resultsdisplay").classList.add("alert-danger")
+                if (data == "error") {
+                    document.getElementById("resultsdisplay").innerText = "คุณไม่ได้ใส่เลขหรือใส่เลขเกินหกหลัก"
+                    document.getElementById("resultsdisplay").classList.remove("alert-danger")
+                    document.getElementById("resultsdisplay").classList.remove("alert-success")
+                    document.getElementById("resultsdisplay").classList.add("alert-danger")
+                    return;
+                }
+                if (data != "") {
+                    document.getElementById("resultsdisplay").innerHTML = "คุณถูก"
+                    document.getElementById("resultsdisplay").classList.remove("alert-danger")
+                    document.getElementById("resultsdisplay").classList.add("alert-success")
+                }
+                if (data.search("111111") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลที่หนึ่ง และ "
+                }
+                if (data.search("333000") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลเลขหน้าสามตัว และ "
+                }
+                if (data.search("000333") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลเลขท้ายสามตัว และ "
+                }
+                if (data.search("000022") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลเลขท้ายสองตัว และ "
+                }
+                if (data.search("111112") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลข้างเคียง และ "
+                }
+                if (data.search("222222") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลที่สอง และ "
+                }
+                if (data.search("333333") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลที่สาม และ "
+                }
+                if (data.search("444444") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลที่สี่ และ "
+                }
+                if (data.search("555555") >= 0) {
+                    document.getElementById("resultsdisplay").innerHTML += "รางวัลที่ห้า และ "
+                }
+                if (data != "") {
+                    document.getElementById("resultsdisplay").innerHTML = document.getElementById("resultsdisplay").innerText.substring(0, document.getElementById("resultsdisplay").innerText.length - 4)
+                    //document.getElementById("resultsdisplay").innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>"
+                }
+            })
+
+
+            /*$.ajax(settings).done(function (response) {
+                data = response;
+                //$.get("https://lottsanook.vercel.app/api/checklottery.php?by="+document.getElementById("test").value+"&search="+document.getElementById("number").value, function(data, status){
+                //alert("Data: " + data + "\nStatus: " + status);
+                document.getElementById("loadingdisplay").style.display = "none"
+                document.getElementById("resultsdisplay").innerText = "คุณไม่ถูกรางวัล"
+                document.getElementById("resultsdisplay").style.display = "block"
+                document.getElementById("resultsdisplay").classList.remove("alert-success")
+                document.getElementById("resultsdisplay").classList.add("alert-danger")
+                if (data == "error") {
+                    document.getElementById("resultsdisplay").innerText = "คุณไม่ได้ใส่เลขหรือใส่เลขเกินหกหลัก"
+                    document.getElementById("resultsdisplay").classList.remove("alert-danger")
+                    document.getElementById("resultsdisplay").classList.remove("alert-success")
+                    document.getElementById("resultsdisplay").classList.add("alert-danger")
+                    return;
+                }
+                if (data != "") {
+                    document.getElementById("resultsdisplay").innerText = "คุณถูก"
+                    document.getElementById("resultsdisplay").classList.remove("alert-danger")
+                    document.getElementById("resultsdisplay").classList.add("alert-success")
+                }
+                if (data.search("111111") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลที่หนึ่ง และ "
+                }
+                if (data.search("333000") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลเลขหน้าสามตัว และ "
+                }
+                if (data.search("000333") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลเลขท้ายสามตัว และ "
+                }
+                if (data.search("000022") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลเลขท้ายสองตัว และ "
+                }
+                if (data.search("111112") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลข้างเคียง และ "
+                }
+                if (data.search("222222") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลที่สอง และ "
+                }
+                if (data.search("333333") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลที่สาม และ "
+                }
+                if (data.search("444444") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลที่สี่ และ "
+                }
+                if (data.search("555555") >= 0) {
+                    document.getElementById("resultsdisplay").innerText += "รางวัลที่ห้า และ "
+                }
+                if (data != "") {
+                    document.getElementById("resultsdisplay").innerText = document.getElementById("resultsdisplay").innerText.substring(0, document.getElementById("resultsdisplay").innerText.length - 4)
+                }
+                //});
+            });*/
+        }
+    </script>
+</body>
+
+</html>
