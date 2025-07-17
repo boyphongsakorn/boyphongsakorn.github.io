@@ -201,68 +201,52 @@
     <!-- Swiper.js carousel for videos -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
     <div class="swiper" style="max-width:900px;margin:0 auto;">
-      <div class="swiper-wrapper">
-        <!-- Example videos, replace video IDs as needed -->
-        <div class="swiper-slide" style="display:flex;align-items:center;justify-content:center;">
-          <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
-            <iframe src="https://player.twitch.tv/?video=123456789&parent=curly-space-telegram-9jr5gqvrvh777v-5500.app.github.dev"
-              width="100%" height="100%" allowfullscreen frameborder="0"
-              style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
-          </div>
-        </div>
-        <div class="swiper-slide" style="display:flex;align-items:center;justify-content:center;">
-          <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
-            <iframe src="https://player.twitch.tv/?video=987654321&parent=boyphongsakorn.github.io"
-              width="100%" height="100%" allowfullscreen frameborder="0"
-              style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
-          </div>
-        </div>
-        <div class="swiper-slide" style="display:flex;align-items:center;justify-content:center;">
-          <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
-            <iframe src="https://player.twitch.tv/?video=555555555&parent=boyphongsakorn.github.io"
-              width="100%" height="100%" allowfullscreen frameborder="0"
-              style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
-          </div>
-        </div>
-        <div class="swiper-slide" style="display:flex;align-items:center;justify-content:center;">
-          <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
-            <iframe src="https://player.twitch.tv/?video=444444444&parent=boyphongsakorn.github.io"
-              width="100%" height="100%" allowfullscreen frameborder="0"
-              style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
-          </div>
-        </div>
-        <div class="swiper-slide" style="display:flex;align-items:center;justify-content:center;">
-          <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
-            <iframe src="https://player.twitch.tv/?video=333333333&parent=boyphongsakorn.github.io"
-              width="100%" height="100%" allowfullscreen frameborder="0"
-              style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
-          </div>
-        </div>
-        <!-- Add more swiper-slide as needed -->
+      <div class="swiper-wrapper" id="twitch-archive-videos">
+        <!-- Videos will be loaded here by JS -->
       </div>
-      <!-- Add navigation buttons -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
-      <!-- Add pagination if needed -->
-      <!-- <div class="swiper-pagination"></div> -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-      new Swiper('.swiper', {
-        slidesPerView: 3,
-        spaceBetween: 16,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        // pagination: { el: '.swiper-pagination', clickable: true },
-        loop: true,
-        breakpoints: {
-          0: { slidesPerView: 1 },
-          600: { slidesPerView: 2 },
-          900: { slidesPerView: 3 }
-        }
-      });
+      // Fetch Twitch archive video IDs and render them
+      fetch('https://localpost.teamquadb.in.th/twitcharchivevideo')
+        .then(res => res.json())
+        .then(videos => {
+          console.log('Twitch archive videos:', videos);
+          const parent = location.hostname || "boyphongsakorn.github.io";
+          const container = document.getElementById('twitch-archive-videos');
+          if (Array.isArray(videos)) {
+            videos.forEach(obj => {
+              const slide = document.createElement('div');
+              slide.className = 'swiper-slide';
+              slide.style = 'display:flex;align-items:center;justify-content:center;';
+              slide.innerHTML = `
+                <div style="width:100%;aspect-ratio:16/9;max-width:300px;">
+                  <iframe src="https://player.twitch.tv/?video=${obj.id}&parent=${parent}&autoplay=false"
+                    width="100%" height="100%" allowfullscreen frameborder="0"
+                    style="width:100%;height:100%;aspect-ratio:16/9;display:block;border-radius:8px;object-fit:cover;"></iframe>
+                </div>
+              `;
+              container.appendChild(slide);
+            });
+          }
+          // Init swiper after DOM update
+          new Swiper('.swiper', {
+            slidesPerView: 2,
+            spaceBetween: 4,
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            loop: true,
+            breakpoints: {
+              0: { slidesPerView: 1, spaceBetween: 2 },
+              600: { slidesPerView: 2, spaceBetween: 4 },
+              900: { slidesPerView: 2, spaceBetween: 4 }
+            }
+          });
+        });
     </script>
   </section>
 
