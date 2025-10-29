@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWisetthon</title>
     <meta name="google-adsense-account" content="ca-pub-9734327609923498">
+    <script defer src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    <div class="xl:container mx-auto hidden lazy" data-bg="https://img.gs/fhcphvsghs/quality=low/https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" id="twitchbanneralert">
+        <div class="container text-center py-2 backdrop-blur-sm">
+            <img class="w-10 h-10 rounded-full mx-auto inline" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Profile Picture">
+            กำลังไลฟ์ อยู่บน Twitch <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="text-sm rounded-md px-3 py-2 bg-gold border border-black dark:border-white dark:text-white">ดูเลย!</a>
+        </div>
+    </div>
     ขี้เกียจทำละเว็บ กดตาม ul list ข้างล่างละกัน
     <ul>
         <li><a href="https://store.line.me/themeshop/product/2e590572-878f-484e-a4d6-6c6cff4a55fb/th">ธีมไลน์ง่ายดี (ธีมมืด)</a></li>
@@ -21,5 +28,27 @@
         <li><a href="https://www.battlemetrics.com/servers/palworld/33185507">Free Palworld Server</a></li>
         <li><a href="https://mkrm.pwisetthon.com">Project สแกนเพื่อเล่นเพลง</a></li>
     </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js"></script>
+
+    <script defer>
+        const lazyLoadInstance = new LazyLoad({
+            elements_selector: ".lazy"
+        });
+
+        //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the div
+        fetch('https://localpost.teamquadb.in.th/twitchstatus')
+            .then(response => response.text())
+            .then(data => {
+                if (data != "offline") {
+                    // remove class hidden from div streamingnow
+                    document.getElementById("twitchbanneralert").classList.remove("hidden");
+                }
+            })
+            .catch(error => {
+                // Silently fail - banner remains hidden if API is unavailable
+                console.error('Error fetching Twitch status:', error);
+            });
+    </script>
 </body>
 </html>
