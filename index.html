@@ -11,7 +11,7 @@
     <div class="xl:container mx-auto hidden lazy" data-bg="https://img.gs/fhcphvsghs/quality=low/https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" id="twitchbanneralert">
         <div class="container text-center py-2 backdrop-blur-sm">
             <img class="w-10 h-10 rounded-full mx-auto inline" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Profile Picture">
-            กำลังไลฟ์ อยู่บน Twitch <a href="https://www.twitch.tv/boyalone99" class="text-sm rounded-md px-3 py-2 bg-gold border border-black dark:border-white dark:text-white">ดูเลย!</a>
+            กำลังไลฟ์ อยู่บน Twitch <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="text-sm rounded-md px-3 py-2 bg-gold border border-black dark:border-white dark:text-white">ดูเลย!</a>
         </div>
     </div>
     ขี้เกียจทำละเว็บ กดตาม ul list ข้างล่างละกัน
@@ -44,6 +44,10 @@
                     // remove class hidden from div streamingnow
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
                 }
+            })
+            .catch(error => {
+                // Silently fail - banner remains hidden if API is unavailable
+                console.error('Error fetching Twitch status:', error);
             });
     </script>
 </body>
