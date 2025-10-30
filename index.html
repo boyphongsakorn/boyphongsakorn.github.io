@@ -22,7 +22,7 @@
             <li><a href="https://store.line.me/themeshop/product/2e590572-878f-484e-a4d6-6c6cff4a55fb/th" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">ธีมไลน์ง่ายดี (ธีมมืด)</span>
             </a></li>
-            <li><a href="https://www.twitch.tv/boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+            <li id="twitchregularlink"><a href="https://www.twitch.tv/boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Twitch.tv</span>
             </a></li>
             <li><a href="https://www.fortnite.com/@boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
@@ -69,6 +69,8 @@
                 if (data != "offline") {
                     // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
+                    // hide the regular Twitch link when live banner is shown
+                    document.getElementById("twitchregularlink").style.display = "none";
                 }
             })
             .catch(error => {
