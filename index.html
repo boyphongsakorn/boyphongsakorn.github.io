@@ -206,6 +206,152 @@
         });
 
         // Steam Wishlist Functionality
+        function createGameCard(appId) {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
+            gameCard.id = `game-card-${appId}`;
+            
+            // Create link element
+            const link = document.createElement('a');
+            link.href = `https://store.steampowered.com/app/${appId}`;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.className = 'block';
+            
+            // Create and add image (thumbnail)
+            const img = document.createElement('img');
+            img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+            img.alt = 'Loading...';
+            img.className = 'w-full h-40 object-cover';
+            img.onerror = function() { this.style.display = 'none'; };
+            link.appendChild(img);
+            
+            // Create content div with game name and price
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'p-3';
+            
+            // Create a flex container for title and price
+            const titlePriceContainer = document.createElement('div');
+            titlePriceContainer.className = 'flex items-center justify-between gap-2';
+            
+            // Create title with loading text
+            const title = document.createElement('h3');
+            title.className = 'font-medium text-gray-400 truncate flex-1';
+            title.textContent = 'Loading...';
+            title.id = `game-title-${appId}`;
+            titlePriceContainer.appendChild(title);
+            
+            // Create price container with loading text
+            const priceContainer = document.createElement('div');
+            priceContainer.className = 'text-right flex-shrink-0';
+            priceContainer.id = `game-price-${appId}`;
+            
+            const price = document.createElement('div');
+            price.className = 'text-sm text-gray-400';
+            price.textContent = 'Loading...';
+            priceContainer.appendChild(price);
+            
+            titlePriceContainer.appendChild(priceContainer);
+            contentDiv.appendChild(titlePriceContainer);
+            
+            link.appendChild(contentDiv);
+            gameCard.appendChild(link);
+            
+            return gameCard;
+        }
+
+        async function updateGameDetails(appId) {
+            try {
+                // Fetch game details from Steam Store API
+                const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
+                
+                if (!detailsResponse.ok) {
+                    console.error(`HTTP error fetching app ${appId}: ${detailsResponse.status}`);
+                    return null;
+                }
+                
+                const detailsData = await detailsResponse.json();
+                
+                if (!detailsData[appId] || !detailsData[appId].success) {
+                    return null;
+                }
+                
+                const gameData = detailsData[appId].data;
+                const gameName = gameData.name;
+                
+                // Get price information
+                let priceText = 'Price not available';
+                let hasDiscount = false;
+                let originalPrice = '';
+                let discountPercent = '';
+                let discountValue = 0;
+                
+                if (gameData.is_free) {
+                    priceText = 'Free to Play';
+                } else if (gameData.price_overview) {
+                    const priceOverview = gameData.price_overview;
+                    priceText = priceOverview.final_formatted;
+                    
+                    if (priceOverview.discount_percent > 0) {
+                        hasDiscount = true;
+                        originalPrice = priceOverview.initial_formatted;
+                        discountPercent = `-${priceOverview.discount_percent}%`;
+                        discountValue = priceOverview.discount_percent;
+                    }
+                }
+                
+                // Update the card with actual data
+                const titleEl = document.getElementById(`game-title-${appId}`);
+                const priceContainerEl = document.getElementById(`game-price-${appId}`);
+                
+                if (titleEl) {
+                    titleEl.textContent = gameName;
+                    titleEl.className = 'font-medium text-gray-800 truncate flex-1';
+                }
+                
+                if (priceContainerEl) {
+                    priceContainerEl.innerHTML = '';
+                    
+                    if (hasDiscount) {
+                        // Original price (strikethrough)
+                        const originalPriceEl = document.createElement('div');
+                        originalPriceEl.className = 'text-xs text-gray-500 line-through';
+                        originalPriceEl.textContent = originalPrice;
+                        priceContainerEl.appendChild(originalPriceEl);
+                        
+                        // Discount percent and final price container
+                        const discountContainer = document.createElement('div');
+                        discountContainer.className = 'flex items-center gap-1';
+                        
+                        // Discount badge
+                        const discountBadge = document.createElement('span');
+                        discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
+                        discountBadge.textContent = discountPercent;
+                        discountContainer.appendChild(discountBadge);
+                        
+                        // Final price
+                        const finalPrice = document.createElement('span');
+                        finalPrice.className = 'text-sm text-green-600 font-semibold';
+                        finalPrice.textContent = priceText;
+                        discountContainer.appendChild(finalPrice);
+                        
+                        priceContainerEl.appendChild(discountContainer);
+                    } else {
+                        // No discount, just show the price
+                        const price = document.createElement('div');
+                        price.className = 'text-sm text-blue-600 font-semibold';
+                        price.textContent = priceText;
+                        priceContainerEl.appendChild(price);
+                    }
+                }
+                
+                return { appId, discountValue };
+            } catch (error) {
+                console.error(`Error fetching details for app ${appId}:`, error);
+                return null;
+            }
+        }
+
         async function fetchSteamWishlist() {
             const apiKey = '22EEAC69A8668511FB364F212A0231B8';
             const steamId = '76561198069538631';
@@ -232,150 +378,31 @@
                     return;
                 }
 
-                // Fetch game details for all apps in wishlist
-                const games = data.response.items;
+                // Get first 3 games from wishlist
+                const games = data.response.items.slice(0, 3);
                 
-                // Fetch game details for all apps concurrently
-                const gameDetailsPromises = games.map(async (item) => {
-                    const appId = item.appid;
-                    
-                    try {
-                        // Fetch game details from Steam Store API
-                        const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
-                        
-                        // Validate HTTP response
-                        if (!detailsResponse.ok) {
-                            console.error(`HTTP error fetching app ${appId}: ${detailsResponse.status}`);
-                            return null;
-                        }
-                        
-                        const detailsData = await detailsResponse.json();
-                        
-                        // Check if data is available for this app
-                        if (!detailsData[appId] || !detailsData[appId].success) {
-                            return null;
-                        }
-                        
-                        const gameData = detailsData[appId].data;
-                        const gameName = gameData.name;
-                        
-                        // Get price information
-                        let priceText = 'Price not available';
-                        let hasDiscount = false;
-                        let originalPrice = '';
-                        let discountPercent = '';
-                        let discountValue = 0;
-                        
-                        if (gameData.is_free) {
-                            priceText = 'Free to Play';
-                        } else if (gameData.price_overview) {
-                            const priceOverview = gameData.price_overview;
-                            priceText = priceOverview.final_formatted;
-                            
-                            // Check if there's a discount
-                            if (priceOverview.discount_percent > 0) {
-                                hasDiscount = true;
-                                originalPrice = priceOverview.initial_formatted;
-                                discountPercent = `-${priceOverview.discount_percent}%`;
-                                discountValue = priceOverview.discount_percent;
-                            }
-                        }
-                        
-                        return { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent, discountValue };
-                    } catch (error) {
-                        console.error(`Error fetching details for app ${appId}:`, error);
-                        return null;
-                    }
+                // Immediately show game cards with images and loading text
+                games.forEach(item => {
+                    const gameCard = createGameCard(item.appid);
+                    contentEl.appendChild(gameCard);
                 });
                 
-                // Wait for all game details to be fetched
-                const gameDetails = await Promise.all(gameDetailsPromises);
+                // Fetch details for each game and update cards as data arrives
+                const detailsPromises = games.map(item => updateGameDetails(item.appid));
                 
-                // Filter out failed fetches and sort by discount percentage (highest first)
-                const validGameDetails = gameDetails
-                    .filter(details => details !== null)
-                    .sort((a, b) => b.discountValue - a.discountValue)
-                    .slice(0, 3); // Take top 3 games with most discount
+                // Wait for all details to load, then reorder by discount
+                const allDetails = await Promise.all(detailsPromises);
+                const validDetails = allDetails.filter(d => d !== null);
                 
-                validGameDetails.forEach((details) => {
-                    const { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent } = details;
-                    
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
-                    
-                    // Create link element
-                    const link = document.createElement('a');
-                    link.href = `https://store.steampowered.com/app/${appId}`;
-                    link.target = '_blank';
-                    link.rel = 'noopener noreferrer';
-                    link.className = 'block';
-                    
-                    // Create and add image (thumbnail)
-                    const img = document.createElement('img');
-                    // Steam app images are available at this URL format
-                    img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
-                    img.alt = gameName;
-                    img.className = 'w-full h-40 object-cover';
-                    img.onerror = function() { this.style.display = 'none'; };
-                    link.appendChild(img);
-                    
-                    // Create content div with game name and price
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = 'p-3';
-                    
-                    // Create a flex container for title and price
-                    const titlePriceContainer = document.createElement('div');
-                    titlePriceContainer.className = 'flex items-center justify-between gap-2';
-                    
-                    // Create title
-                    const title = document.createElement('h3');
-                    title.className = 'font-medium text-gray-800 truncate flex-1';
-                    title.textContent = gameName;
-                    titlePriceContainer.appendChild(title);
-                    
-                    // Create price container (on the right)
-                    const priceContainer = document.createElement('div');
-                    priceContainer.className = 'text-right flex-shrink-0';
-                    
-                    // If there's a discount, show original price and discount
-                    if (hasDiscount) {
-                        // Original price (strikethrough)
-                        const originalPriceEl = document.createElement('div');
-                        originalPriceEl.className = 'text-xs text-gray-500 line-through';
-                        originalPriceEl.textContent = originalPrice;
-                        priceContainer.appendChild(originalPriceEl);
-                        
-                        // Discount percent and final price container
-                        const discountContainer = document.createElement('div');
-                        discountContainer.className = 'flex items-center gap-1';
-                        
-                        // Discount badge
-                        const discountBadge = document.createElement('span');
-                        discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
-                        discountBadge.textContent = discountPercent;
-                        discountContainer.appendChild(discountBadge);
-                        
-                        // Final price
-                        const finalPrice = document.createElement('span');
-                        finalPrice.className = 'text-sm text-green-600 font-semibold';
-                        finalPrice.textContent = priceText;
-                        discountContainer.appendChild(finalPrice);
-                        
-                        priceContainer.appendChild(discountContainer);
-                    } else {
-                        // No discount, just show the price
-                        const price = document.createElement('div');
-                        price.className = 'text-sm text-blue-600 font-semibold';
-                        price.textContent = priceText;
-                        priceContainer.appendChild(price);
+                // Sort by discount value and reorder cards
+                validDetails.sort((a, b) => b.discountValue - a.discountValue);
+                
+                // Reorder the cards in the DOM
+                validDetails.forEach(detail => {
+                    const card = document.getElementById(`game-card-${detail.appId}`);
+                    if (card) {
+                        contentEl.appendChild(card); // Move to end (reorder)
                     }
-                    
-                    titlePriceContainer.appendChild(priceContainer);
-                    contentDiv.appendChild(titlePriceContainer);
-                    
-                    link.appendChild(contentDiv);
-                    gameCard.appendChild(link);
-                    contentEl.appendChild(gameCard);
                 });
 
             } catch (error) {
