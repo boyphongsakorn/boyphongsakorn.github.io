@@ -127,6 +127,8 @@
             });
 
         // Rain Sensor Functionality
+        const RAIN_STATE_RAINING = 'on';
+        
         function formatThaiTimeDifference(lastChangedTime) {
             const now = new Date();
             const lastChanged = new Date(lastChangedTime);
@@ -159,7 +161,7 @@
                 const rainLastChangedEl = document.getElementById('rainLastChanged');
 
                 // Check if status is "on" (raining) or anything else (not raining)
-                if (data.state && data.state.toLowerCase() === 'on') {
+                if (data.state && data.state.toLowerCase() === RAIN_STATE_RAINING) {
                     rainStatusEl.textContent = 'กำลังฝนตก';
                     rainStatusEl.className = 'text-blue-600 font-semibold';
                 } else {
