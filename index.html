@@ -159,20 +159,19 @@
                 const gameDetails = await Promise.all(gameDetailsPromises);
                 
                 // Filter out failed fetches and display successful ones
-                gameDetails
-                    .filter(details => details !== null)
-                    .forEach((details) => {
-                        const { appId, gameName, priceText } = details;
-                        
-                        const gameCard = document.createElement('div');
-                        gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
-                        
-                        // Create link element
-                        const link = document.createElement('a');
-                        link.href = `https://store.steampowered.com/app/${appId}`;
-                        link.target = '_blank';
-                        link.rel = 'noopener noreferrer';
-                        link.className = 'block';
+                const validGameDetails = gameDetails.filter(details => details !== null);
+                validGameDetails.forEach((details) => {
+                    const { appId, gameName, priceText } = details;
+                    
+                    const gameCard = document.createElement('div');
+                    gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
+                    
+                    // Create link element
+                    const link = document.createElement('a');
+                    link.href = `https://store.steampowered.com/app/${appId}`;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.className = 'block';
                     
                     // Create and add image (thumbnail)
                     const img = document.createElement('img');
