@@ -122,7 +122,7 @@
                     
                     try {
                         // Fetch game details from Steam Store API
-                        const detailsResponse = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
+                        const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
                         
                         // Validate HTTP response
                         if (!detailsResponse.ok) {
@@ -142,13 +142,25 @@
                         
                         // Get price information
                         let priceText = 'Price not available';
+                        let hasDiscount = false;
+                        let originalPrice = '';
+                        let discountPercent = '';
+                        
                         if (gameData.is_free) {
                             priceText = 'Free to Play';
                         } else if (gameData.price_overview) {
-                            priceText = gameData.price_overview.final_formatted;
+                            const priceOverview = gameData.price_overview;
+                            priceText = priceOverview.final_formatted;
+                            
+                            // Check if there's a discount
+                            if (priceOverview.discount_percent > 0) {
+                                hasDiscount = true;
+                                originalPrice = priceOverview.initial_formatted;
+                                discountPercent = `-${priceOverview.discount_percent}%`;
+                            }
                         }
                         
-                        return { appId, gameName, priceText };
+                        return { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent };
                     } catch (error) {
                         console.error(`Error fetching details for app ${appId}:`, error);
                         return null;
@@ -161,7 +173,7 @@
                 // Filter out failed fetches and display successful ones
                 const validGameDetails = gameDetails.filter(details => details !== null);
                 validGameDetails.forEach((details) => {
-                    const { appId, gameName, priceText } = details;
+                    const { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent } = details;
                     
                     const gameCard = document.createElement('div');
                     gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
@@ -186,17 +198,55 @@
                     const contentDiv = document.createElement('div');
                     contentDiv.className = 'p-3';
                     
+                    // Create a flex container for title and price
+                    const titlePriceContainer = document.createElement('div');
+                    titlePriceContainer.className = 'flex items-center justify-between gap-2';
+                    
                     // Create title
                     const title = document.createElement('h3');
-                    title.className = 'font-medium text-gray-800 mb-1 truncate';
+                    title.className = 'font-medium text-gray-800 truncate flex-1';
                     title.textContent = gameName;
-                    contentDiv.appendChild(title);
+                    titlePriceContainer.appendChild(title);
                     
-                    // Create price element
-                    const price = document.createElement('p');
-                    price.className = 'text-sm text-blue-600 font-semibold';
-                    price.textContent = priceText;
-                    contentDiv.appendChild(price);
+                    // Create price container (on the right)
+                    const priceContainer = document.createElement('div');
+                    priceContainer.className = 'text-right flex-shrink-0';
+                    
+                    // If there's a discount, show original price and discount
+                    if (hasDiscount) {
+                        // Original price (strikethrough)
+                        const originalPriceEl = document.createElement('div');
+                        originalPriceEl.className = 'text-xs text-gray-500 line-through';
+                        originalPriceEl.textContent = originalPrice;
+                        priceContainer.appendChild(originalPriceEl);
+                        
+                        // Discount percent and final price container
+                        const discountContainer = document.createElement('div');
+                        discountContainer.className = 'flex items-center gap-1';
+                        
+                        // Discount badge
+                        const discountBadge = document.createElement('span');
+                        discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
+                        discountBadge.textContent = discountPercent;
+                        discountContainer.appendChild(discountBadge);
+                        
+                        // Final price
+                        const finalPrice = document.createElement('span');
+                        finalPrice.className = 'text-sm text-green-600 font-semibold';
+                        finalPrice.textContent = priceText;
+                        discountContainer.appendChild(finalPrice);
+                        
+                        priceContainer.appendChild(discountContainer);
+                    } else {
+                        // No discount, just show the price
+                        const price = document.createElement('div');
+                        price.className = 'text-sm text-blue-600 font-semibold';
+                        price.textContent = priceText;
+                        priceContainer.appendChild(price);
+                    }
+                    
+                    titlePriceContainer.appendChild(priceContainer);
+                    contentDiv.appendChild(titlePriceContainer);
                     
                     link.appendChild(contentDiv);
                     gameCard.appendChild(link);
