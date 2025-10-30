@@ -345,7 +345,7 @@
                     }
                 }
                 
-                return { appId, discountValue };
+                return true; // Success
             } catch (error) {
                 console.error(`Error fetching details for app ${appId}:`, error);
                 return null;
@@ -378,8 +378,9 @@
                     return;
                 }
 
-                // Get first 3 games from wishlist
-                const games = data.response.items.slice(0, 3);
+                // Get last 3 games from wishlist (most recently added)
+                const totalGames = data.response.items.length;
+                const games = data.response.items.slice(Math.max(0, totalGames - 3));
                 
                 // Immediately show game cards with images and loading text
                 games.forEach(item => {
@@ -390,20 +391,8 @@
                 // Fetch details for each game and update cards as data arrives
                 const detailsPromises = games.map(item => updateGameDetails(item.appid));
                 
-                // Wait for all details to load, then reorder by discount
-                const allDetails = await Promise.all(detailsPromises);
-                const validDetails = allDetails.filter(d => d !== null);
-                
-                // Sort by discount value and reorder cards
-                validDetails.sort((a, b) => b.discountValue - a.discountValue);
-                
-                // Reorder the cards in the DOM
-                validDetails.forEach(detail => {
-                    const card = document.getElementById(`game-card-${detail.appId}`);
-                    if (card) {
-                        contentEl.appendChild(card); // Move to end (reorder)
-                    }
-                });
+                // Wait for all details to load
+                await Promise.all(detailsPromises);
 
             } catch (error) {
                 console.error('Error fetching Steam wishlist:', error);
