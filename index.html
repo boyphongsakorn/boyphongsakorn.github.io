@@ -116,13 +116,6 @@
                 const games = Object.entries(wishlistData).slice(0, 12); // Show first 12 games
                 
                 games.forEach(([appId, gameData]) => {
-                    // Sanitize data to prevent XSS
-                    const sanitize = (str) => {
-                        const div = document.createElement('div');
-                        div.textContent = str;
-                        return div.innerHTML;
-                    };
-                    
                     const gameCard = document.createElement('div');
                     gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
                     
@@ -136,7 +129,7 @@
                     // Create and add image
                     const img = document.createElement('img');
                     img.src = gameData.capsule || '';
-                    img.alt = sanitize(gameData.name || 'Game');
+                    img.alt = gameData.name || 'Game';
                     img.className = 'w-full h-40 object-cover';
                     img.onerror = function() { this.style.display = 'none'; };
                     link.appendChild(img);
