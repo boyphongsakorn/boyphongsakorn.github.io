@@ -40,6 +40,34 @@
             <li><a href="https://bussy.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Bussy (เว็บรวมตารางงาน)</span>
             </a></li>
+            
+            <!-- Toggle button for card bottom section -->
+            <li class="flex justify-center">
+                <button id="toggleCardBottom" class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none">
+                    <svg id="toggleIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </li>
+            
+            <!-- Collapsible card bottom section -->
+            <li id="cardBottomSection" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                    <!-- Box 1 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 1 -->
+                    </div>
+                    <!-- Box 2 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 2 -->
+                    </div>
+                    <!-- Box 3 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 3 -->
+                    </div>
+                </div>
+            </li>
+            
             <li><a href="https://send.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Send (เว็บฝากไฟล์ชั่วคราว)</span>
             </a></li>
@@ -85,6 +113,23 @@
                 // Silently fail - banner remains hidden if API is unavailable
                 console.error('Error fetching Twitch status:', error);
             });
+
+        // Card Bottom Toggle Functionality
+        const toggleButton = document.getElementById('toggleCardBottom');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const cardBottomSection = document.getElementById('cardBottomSection');
+        
+        toggleButton.addEventListener('click', function() {
+            // Toggle the hidden class
+            cardBottomSection.classList.toggle('hidden');
+            
+            // Rotate the icon (180 degrees when expanded)
+            if (cardBottomSection.classList.contains('hidden')) {
+                toggleIcon.classList.remove('rotate-180');
+            } else {
+                toggleIcon.classList.add('rotate-180');
+            }
+        });
 
         // Steam Wishlist Functionality
         async function fetchSteamWishlist() {
