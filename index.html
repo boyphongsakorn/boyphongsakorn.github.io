@@ -113,8 +113,8 @@
                     return;
                 }
 
-                // Display only first 3 games
-                const games = data.response.items.slice(0, 3);
+                // Fetch game details for all apps in wishlist
+                const games = data.response.items;
                 
                 // Fetch game details for all apps concurrently
                 const gameDetailsPromises = games.map(async (item) => {
@@ -145,6 +145,7 @@
                         let hasDiscount = false;
                         let originalPrice = '';
                         let discountPercent = '';
+                        let discountValue = 0;
                         
                         if (gameData.is_free) {
                             priceText = 'Free to Play';
@@ -157,10 +158,11 @@
                                 hasDiscount = true;
                                 originalPrice = priceOverview.initial_formatted;
                                 discountPercent = `-${priceOverview.discount_percent}%`;
+                                discountValue = priceOverview.discount_percent;
                             }
                         }
                         
-                        return { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent };
+                        return { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent, discountValue };
                     } catch (error) {
                         console.error(`Error fetching details for app ${appId}:`, error);
                         return null;
@@ -170,8 +172,12 @@
                 // Wait for all game details to be fetched
                 const gameDetails = await Promise.all(gameDetailsPromises);
                 
-                // Filter out failed fetches and display successful ones
-                const validGameDetails = gameDetails.filter(details => details !== null);
+                // Filter out failed fetches and sort by discount percentage (highest first)
+                const validGameDetails = gameDetails
+                    .filter(details => details !== null)
+                    .sort((a, b) => b.discountValue - a.discountValue)
+                    .slice(0, 3); // Take top 3 games with most discount
+                
                 validGameDetails.forEach((details) => {
                     const { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent } = details;
                     
