@@ -56,12 +56,12 @@
     </div>
 
     <script defer>
-        //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the div
+        //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the list item
         fetch('https://localpost.teamquadb.in.th/twitchstatus')
             .then(response => response.text())
             .then(data => {
                 if (data != "offline") {
-                    // remove class hidden from div streamingnow
+                    // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
                 }
             })
