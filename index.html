@@ -37,9 +37,38 @@
             <li><a href="https://mccplog.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Log เซิฟเวอร์ Minecraft</span>
             </a></li>
-            <li><a href="https://bussy.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
-                <span class="text-blue-600 font-medium">Bussy (เว็บรวมตารางงาน)</span>
-            </a></li>
+            <li>
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                    <a href="https://bussy.pwisetthon.com" class="flex-1">
+                        <span class="text-blue-600 font-medium">Busy (เว็บรวมตารางงาน)</span>
+                    </a>
+                    <!-- Toggle button for card bottom section -->
+                    <button id="toggleCardBottom" class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none ml-2">
+                        <svg id="toggleIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </li>
+            
+            <!-- Collapsible card bottom section -->
+            <li id="cardBottomSection" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                    <!-- Box 1 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 1 -->
+                    </div>
+                    <!-- Box 2 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 2 -->
+                    </div>
+                    <!-- Box 3 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[150px]">
+                        <!-- Placeholder for box 3 -->
+                    </div>
+                </div>
+            </li>
+            
             <li><a href="https://send.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Send (เว็บฝากไฟล์ชั่วคราว)</span>
             </a></li>
@@ -86,6 +115,23 @@
                 console.error('Error fetching Twitch status:', error);
             });
 
+        // Card Bottom Toggle Functionality
+        const toggleButton = document.getElementById('toggleCardBottom');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const cardBottomSection = document.getElementById('cardBottomSection');
+        
+        toggleButton.addEventListener('click', function() {
+            // Toggle the hidden class
+            cardBottomSection.classList.toggle('hidden');
+            
+            // Rotate the icon (180 degrees when expanded)
+            if (cardBottomSection.classList.contains('hidden')) {
+                toggleIcon.classList.remove('rotate-180');
+            } else {
+                toggleIcon.classList.add('rotate-180');
+            }
+        });
+
         // Steam Wishlist Functionality
         async function fetchSteamWishlist() {
             const apiKey = '22EEAC69A8668511FB364F212A0231B8';
@@ -113,18 +159,80 @@
                     return;
                 }
 
-                // Display only first 3 games
-                const games = data.response.items.slice(0, 3);
+                // Fetch game details for all apps in wishlist
+                const games = data.response.items;
                 
-                games.forEach((item) => {
+                // Fetch game details for all apps concurrently
+                const gameDetailsPromises = games.map(async (item) => {
                     const appId = item.appid;
+                    
+                    try {
+                        // Fetch game details from Steam Store API
+                        const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
+                        
+                        // Validate HTTP response
+                        if (!detailsResponse.ok) {
+                            console.error(`HTTP error fetching app ${appId}: ${detailsResponse.status}`);
+                            return null;
+                        }
+                        
+                        const detailsData = await detailsResponse.json();
+                        
+                        // Check if data is available for this app
+                        if (!detailsData[appId] || !detailsData[appId].success) {
+                            return null;
+                        }
+                        
+                        const gameData = detailsData[appId].data;
+                        const gameName = gameData.name;
+                        
+                        // Get price information
+                        let priceText = 'Price not available';
+                        let hasDiscount = false;
+                        let originalPrice = '';
+                        let discountPercent = '';
+                        let discountValue = 0;
+                        
+                        if (gameData.is_free) {
+                            priceText = 'Free to Play';
+                        } else if (gameData.price_overview) {
+                            const priceOverview = gameData.price_overview;
+                            priceText = priceOverview.final_formatted;
+                            
+                            // Check if there's a discount
+                            if (priceOverview.discount_percent > 0) {
+                                hasDiscount = true;
+                                originalPrice = priceOverview.initial_formatted;
+                                discountPercent = `-${priceOverview.discount_percent}%`;
+                                discountValue = priceOverview.discount_percent;
+                            }
+                        }
+                        
+                        return { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent, discountValue };
+                    } catch (error) {
+                        console.error(`Error fetching details for app ${appId}:`, error);
+                        return null;
+                    }
+                });
+                
+                // Wait for all game details to be fetched
+                const gameDetails = await Promise.all(gameDetailsPromises);
+                
+                // Filter out failed fetches and sort by discount percentage (highest first)
+                const validGameDetails = gameDetails
+                    .filter(details => details !== null)
+                    .sort((a, b) => b.discountValue - a.discountValue)
+                    .slice(0, 3); // Take top 3 games with most discount
+                
+                validGameDetails.forEach((details) => {
+                    const { appId, gameName, priceText, hasDiscount, originalPrice, discountPercent } = details;
                     
                     const gameCard = document.createElement('div');
                     gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
                     
                     // Create link element
                     const link = document.createElement('a');
-                    link.href = `https://store.steampowered.com/app/${encodeURIComponent(appId)}`;
+                    link.href = `https://store.steampowered.com/app/${appId}`;
                     link.target = '_blank';
                     link.rel = 'noopener noreferrer';
                     link.className = 'block';
@@ -133,20 +241,64 @@
                     const img = document.createElement('img');
                     // Steam app images are available at this URL format
                     img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
-                    img.alt = item.name || 'Game';
+                    img.alt = gameName;
                     img.className = 'w-full h-40 object-cover';
                     img.onerror = function() { this.style.display = 'none'; };
                     link.appendChild(img);
                     
-                    // Create content div with only game name
+                    // Create content div with game name and price
                     const contentDiv = document.createElement('div');
                     contentDiv.className = 'p-3';
                     
+                    // Create a flex container for title and price
+                    const titlePriceContainer = document.createElement('div');
+                    titlePriceContainer.className = 'flex items-center justify-between gap-2';
+                    
                     // Create title
                     const title = document.createElement('h3');
-                    title.className = 'font-medium text-gray-800 mb-1 truncate';
-                    title.textContent = item.name || 'Unknown Game';
-                    contentDiv.appendChild(title);
+                    title.className = 'font-medium text-gray-800 truncate flex-1';
+                    title.textContent = gameName;
+                    titlePriceContainer.appendChild(title);
+                    
+                    // Create price container (on the right)
+                    const priceContainer = document.createElement('div');
+                    priceContainer.className = 'text-right flex-shrink-0';
+                    
+                    // If there's a discount, show original price and discount
+                    if (hasDiscount) {
+                        // Original price (strikethrough)
+                        const originalPriceEl = document.createElement('div');
+                        originalPriceEl.className = 'text-xs text-gray-500 line-through';
+                        originalPriceEl.textContent = originalPrice;
+                        priceContainer.appendChild(originalPriceEl);
+                        
+                        // Discount percent and final price container
+                        const discountContainer = document.createElement('div');
+                        discountContainer.className = 'flex items-center gap-1';
+                        
+                        // Discount badge
+                        const discountBadge = document.createElement('span');
+                        discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
+                        discountBadge.textContent = discountPercent;
+                        discountContainer.appendChild(discountBadge);
+                        
+                        // Final price
+                        const finalPrice = document.createElement('span');
+                        finalPrice.className = 'text-sm text-green-600 font-semibold';
+                        finalPrice.textContent = priceText;
+                        discountContainer.appendChild(finalPrice);
+                        
+                        priceContainer.appendChild(discountContainer);
+                    } else {
+                        // No discount, just show the price
+                        const price = document.createElement('div');
+                        price.className = 'text-sm text-blue-600 font-semibold';
+                        price.textContent = priceText;
+                        priceContainer.appendChild(price);
+                    }
+                    
+                    titlePriceContainer.appendChild(priceContainer);
+                    contentDiv.appendChild(titlePriceContainer);
                     
                     link.appendChild(contentDiv);
                     gameCard.appendChild(link);
