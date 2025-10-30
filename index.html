@@ -53,6 +53,14 @@
                 <span class="text-blue-600 font-medium">Project สแกนเพิ่ม Playlist เพลง</span>
             </a></li>
         </ul>
+
+        <!-- Steam Wishlist Section -->
+        <div id="steamWishlistSection" class="mt-8">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Steam Wishlist</h2>
+            <div id="steamWishlistLoading" class="text-gray-600">Loading wishlist...</div>
+            <div id="steamWishlistError" class="hidden text-red-600"></div>
+            <div id="steamWishlistContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js"></script>
@@ -77,6 +85,84 @@
                 // Silently fail - banner remains hidden if API is unavailable
                 console.error('Error fetching Twitch status:', error);
             });
+
+        // Steam Wishlist Functionality
+        async function fetchSteamWishlist() {
+            const apiKey = '22EEAC69A8668511FB364F212A0231B8';
+            const steamId = '76561198069538631';
+            const loadingEl = document.getElementById('steamWishlistLoading');
+            const errorEl = document.getElementById('steamWishlistError');
+            const contentEl = document.getElementById('steamWishlistContent');
+
+            try {
+                // Fetch wishlist data from Steam API
+                const response = await fetch(`http://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=${apiKey}&steamid=${steamId}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch wishlist');
+                }
+
+                const data = await response.json();
+                
+                // Hide loading message
+                loadingEl.style.display = 'none';
+
+                // Check if wishlist is empty
+                if (!data.response || !data.response.items || data.response.items.length === 0) {
+                    contentEl.innerHTML = '<p class="text-gray-600">No games in wishlist</p>';
+                    return;
+                }
+
+                // Display only first 3 games
+                const games = data.response.items.slice(0, 3);
+                
+                games.forEach((item) => {
+                    const appId = item.appid;
+                    
+                    const gameCard = document.createElement('div');
+                    gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
+                    
+                    // Create link element
+                    const link = document.createElement('a');
+                    link.href = `https://store.steampowered.com/app/${encodeURIComponent(appId)}`;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.className = 'block';
+                    
+                    // Create and add image (thumbnail)
+                    const img = document.createElement('img');
+                    // Steam app images are available at this URL format
+                    img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+                    img.alt = item.name || 'Game';
+                    img.className = 'w-full h-40 object-cover';
+                    img.onerror = function() { this.style.display = 'none'; };
+                    link.appendChild(img);
+                    
+                    // Create content div with only game name
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'p-3';
+                    
+                    // Create title
+                    const title = document.createElement('h3');
+                    title.className = 'font-medium text-gray-800 mb-1 truncate';
+                    title.textContent = item.name || 'Unknown Game';
+                    contentDiv.appendChild(title);
+                    
+                    link.appendChild(contentDiv);
+                    gameCard.appendChild(link);
+                    contentEl.appendChild(gameCard);
+                });
+
+            } catch (error) {
+                console.error('Error fetching Steam wishlist:', error);
+                loadingEl.style.display = 'none';
+                errorEl.textContent = 'Unable to load Steam wishlist. Please try again later.';
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        // Load Steam wishlist when page loads
+        fetchSteamWishlist();
     </script>
 </body>
 </html>
