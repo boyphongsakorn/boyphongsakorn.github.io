@@ -96,7 +96,7 @@
 
             try {
                 // Fetch wishlist data from Steam API
-                const response = await fetch(`https://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=${apiKey}&steamid=${steamId}`);
+                const response = await fetch(`https://anywhere.pwisetthon.com/https://api.steampowered.com/IWishlistService/GetWishlist/v1/?key=${apiKey}&steamid=${steamId}`);
                 
                 if (!response.ok) {
                     throw new Error('Failed to fetch wishlist');
