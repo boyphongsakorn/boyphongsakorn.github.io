@@ -8,21 +8,21 @@
     <script defer src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
-    <div class="xl:container mx-auto hidden lazy" data-bg="https://img.gs/fhcphvsghs/quality=low/https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" id="twitchbanneralert">
-        <div class="container text-center py-2 backdrop-blur-sm">
-            <img class="w-10 h-10 rounded-full mx-auto inline" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Profile Picture">
-            กำลังไลฟ์ อยู่บน Twitch <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="text-sm rounded-md px-3 py-2 bg-gold border border-black dark:border-white dark:text-white">ดูเลย!</a>
-        </div>
-    </div>
     <div class="max-w-4xl mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-2 text-gray-800">PWisetthon</h1>
         <p class="text-gray-600 mb-6">ขี้เกียจทำละเว็บ กดตาม ul list ข้างล่างละกัน</p>
         
         <ul class="space-y-3">
+            <li id="twitchbanneralert" class="hidden lazy" data-bg="https://img.gs/fhcphvsghs/quality=low/https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg">
+                <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 bg-cover bg-center" style="background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(2px);">
+                    <img class="w-10 h-10 rounded-full inline mr-2" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Live indicator">
+                    <span class="text-blue-600 font-medium">🔴 กำลังไลฟ์ อยู่บน Twitch - ดูเลย!</span>
+                </a>
+            </li>
             <li><a href="https://store.line.me/themeshop/product/2e590572-878f-484e-a4d6-6c6cff4a55fb/th" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">ธีมไลน์ง่ายดี (ธีมมืด)</span>
             </a></li>
-            <li><a href="https://www.twitch.tv/boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+            <li id="twitchregularlink"><a href="https://www.twitch.tv/boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Twitch.tv</span>
             </a></li>
             <li><a href="https://www.fortnite.com/@boyalone99" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
@@ -62,13 +62,15 @@
             elements_selector: ".lazy"
         });
 
-        //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the div
+        //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the list item
         fetch('https://localpost.teamquadb.in.th/twitchstatus')
             .then(response => response.text())
             .then(data => {
                 if (data != "offline") {
-                    // remove class hidden from div streamingnow
+                    // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
+                    // hide the regular Twitch link when live banner is shown
+                    document.getElementById("twitchregularlink").style.display = "none";
                 }
             })
             .catch(error => {
