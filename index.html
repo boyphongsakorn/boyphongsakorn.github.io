@@ -164,10 +164,10 @@
 
                 // Check if status is "on" (raining) or anything else (not raining)
                 if (data.state && data.state.toLowerCase() === RAIN_STATE_RAINING) {
-                    rainStatusEl.textContent = 'กำลังฝนตก';
+                    rainStatusEl.textContent = 'ฝนกำลังตก';
                     rainStatusEl.className = 'text-blue-600 font-semibold';
                 } else {
-                    rainStatusEl.textContent = 'ไม่ฝน';
+                    rainStatusEl.textContent = 'ไม่ตก';
                     rainStatusEl.className = 'text-gray-600';
                 }
 
