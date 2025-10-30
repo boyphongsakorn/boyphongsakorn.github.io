@@ -116,18 +116,25 @@
                 // Display only first 3 games
                 const games = data.response.items.slice(0, 3);
                 
-                // Fetch game details for each app
-                for (const item of games) {
+                // Fetch game details for all apps concurrently
+                const gameDetailsPromises = games.map(async (item) => {
                     const appId = item.appid;
                     
                     try {
                         // Fetch game details from Steam Store API
                         const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
+                        
+                        // Validate HTTP response
+                        if (!detailsResponse.ok) {
+                            console.error(`HTTP error fetching app ${appId}: ${detailsResponse.status}`);
+                            return null;
+                        }
+                        
                         const detailsData = await detailsResponse.json();
                         
                         // Check if data is available for this app
                         if (!detailsData[appId] || !detailsData[appId].success) {
-                            continue;
+                            return null;
                         }
                         
                         const gameData = detailsData[appId].data;
@@ -141,50 +148,61 @@
                             priceText = gameData.price_overview.final_formatted;
                         }
                         
-                        const gameCard = document.createElement('div');
-                        gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
-                        
-                        // Create link element
-                        const link = document.createElement('a');
-                        link.href = `https://store.steampowered.com/app/${encodeURIComponent(appId)}`;
-                        link.target = '_blank';
-                        link.rel = 'noopener noreferrer';
-                        link.className = 'block';
-                        
-                        // Create and add image (thumbnail)
-                        const img = document.createElement('img');
-                        // Steam app images are available at this URL format
-                        img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
-                        img.alt = gameName;
-                        img.className = 'w-full h-40 object-cover';
-                        img.onerror = function() { this.style.display = 'none'; };
-                        link.appendChild(img);
-                        
-                        // Create content div with game name and price
-                        const contentDiv = document.createElement('div');
-                        contentDiv.className = 'p-3';
-                        
-                        // Create title
-                        const title = document.createElement('h3');
-                        title.className = 'font-medium text-gray-800 mb-1 truncate';
-                        title.textContent = gameName;
-                        contentDiv.appendChild(title);
-                        
-                        // Create price element
-                        const price = document.createElement('p');
-                        price.className = 'text-sm text-blue-600 font-semibold';
-                        price.textContent = priceText;
-                        contentDiv.appendChild(price);
-                        
-                        link.appendChild(contentDiv);
-                        gameCard.appendChild(link);
-                        contentEl.appendChild(gameCard);
+                        return { appId, gameName, priceText };
                     } catch (error) {
                         console.error(`Error fetching details for app ${appId}:`, error);
-                        // Continue with next game if one fails
-                        continue;
+                        return null;
                     }
-                }
+                });
+                
+                // Wait for all game details to be fetched
+                const gameDetails = await Promise.all(gameDetailsPromises);
+                
+                // Display games that were successfully fetched
+                gameDetails.forEach((details) => {
+                    if (!details) return; // Skip failed fetches
+                    
+                    const { appId, gameName, priceText } = details;
+                    
+                    const gameCard = document.createElement('div');
+                    gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
+                    
+                    // Create link element
+                    const link = document.createElement('a');
+                    link.href = `https://store.steampowered.com/app/${encodeURIComponent(appId)}`;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    link.className = 'block';
+                    
+                    // Create and add image (thumbnail)
+                    const img = document.createElement('img');
+                    // Steam app images are available at this URL format
+                    img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+                    img.alt = gameName;
+                    img.className = 'w-full h-40 object-cover';
+                    img.onerror = function() { this.style.display = 'none'; };
+                    link.appendChild(img);
+                    
+                    // Create content div with game name and price
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'p-3';
+                    
+                    // Create title
+                    const title = document.createElement('h3');
+                    title.className = 'font-medium text-gray-800 mb-1 truncate';
+                    title.textContent = gameName;
+                    contentDiv.appendChild(title);
+                    
+                    // Create price element
+                    const price = document.createElement('p');
+                    price.className = 'text-sm text-blue-600 font-semibold';
+                    price.textContent = priceText;
+                    contentDiv.appendChild(price);
+                    
+                    link.appendChild(contentDiv);
+                    gameCard.appendChild(link);
+                    contentEl.appendChild(gameCard);
+                });
 
             } catch (error) {
                 console.error('Error fetching Steam wishlist:', error);
