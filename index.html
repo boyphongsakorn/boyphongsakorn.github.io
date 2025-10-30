@@ -260,7 +260,7 @@
             return gameCard;
         }
 
-        async function updateGameDetails(appId) {
+        async function updateGameDetails(appId, updateDOM = true) {
             try {
                 // Fetch game details from Steam Store API
                 const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
@@ -300,52 +300,54 @@
                     }
                 }
                 
-                // Update the card with actual data
-                const titleEl = document.getElementById(`game-title-${appId}`);
-                const priceContainerEl = document.getElementById(`game-price-${appId}`);
-                
-                if (titleEl) {
-                    titleEl.textContent = gameName;
-                    titleEl.className = 'font-medium text-gray-800 truncate flex-1';
-                }
-                
-                if (priceContainerEl) {
-                    priceContainerEl.innerHTML = '';
+                // Update the card with actual data only if updateDOM is true
+                if (updateDOM) {
+                    const titleEl = document.getElementById(`game-title-${appId}`);
+                    const priceContainerEl = document.getElementById(`game-price-${appId}`);
                     
-                    if (hasDiscount) {
-                        // Original price (strikethrough)
-                        const originalPriceEl = document.createElement('div');
-                        originalPriceEl.className = 'text-xs text-gray-500 line-through';
-                        originalPriceEl.textContent = originalPrice;
-                        priceContainerEl.appendChild(originalPriceEl);
+                    if (titleEl) {
+                        titleEl.textContent = gameName;
+                        titleEl.className = 'font-medium text-gray-800 truncate flex-1';
+                    }
+                    
+                    if (priceContainerEl) {
+                        priceContainerEl.innerHTML = '';
                         
-                        // Discount percent and final price container
-                        const discountContainer = document.createElement('div');
-                        discountContainer.className = 'flex items-center gap-1';
-                        
-                        // Discount badge
-                        const discountBadge = document.createElement('span');
-                        discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
-                        discountBadge.textContent = discountPercent;
-                        discountContainer.appendChild(discountBadge);
-                        
-                        // Final price
-                        const finalPrice = document.createElement('span');
-                        finalPrice.className = 'text-sm text-green-600 font-semibold';
-                        finalPrice.textContent = priceText;
-                        discountContainer.appendChild(finalPrice);
-                        
-                        priceContainerEl.appendChild(discountContainer);
-                    } else {
-                        // No discount, just show the price
-                        const price = document.createElement('div');
-                        price.className = 'text-sm text-blue-600 font-semibold';
-                        price.textContent = priceText;
-                        priceContainerEl.appendChild(price);
+                        if (hasDiscount) {
+                            // Original price (strikethrough)
+                            const originalPriceEl = document.createElement('div');
+                            originalPriceEl.className = 'text-xs text-gray-500 line-through';
+                            originalPriceEl.textContent = originalPrice;
+                            priceContainerEl.appendChild(originalPriceEl);
+                            
+                            // Discount percent and final price container
+                            const discountContainer = document.createElement('div');
+                            discountContainer.className = 'flex items-center gap-1';
+                            
+                            // Discount badge
+                            const discountBadge = document.createElement('span');
+                            discountBadge.className = 'text-xs bg-green-600 text-white px-1 rounded font-semibold';
+                            discountBadge.textContent = discountPercent;
+                            discountContainer.appendChild(discountBadge);
+                            
+                            // Final price
+                            const finalPrice = document.createElement('span');
+                            finalPrice.className = 'text-sm text-green-600 font-semibold';
+                            finalPrice.textContent = priceText;
+                            discountContainer.appendChild(finalPrice);
+                            
+                            priceContainerEl.appendChild(discountContainer);
+                        } else {
+                            // No discount, just show the price
+                            const price = document.createElement('div');
+                            price.className = 'text-sm text-blue-600 font-semibold';
+                            price.textContent = priceText;
+                            priceContainerEl.appendChild(price);
+                        }
                     }
                 }
                 
-                return true; // Success
+                return { appId, discountValue }; // Return discount info for sorting
             } catch (error) {
                 console.error(`Error fetching details for app ${appId}:`, error);
                 return null;
@@ -378,21 +380,62 @@
                     return;
                 }
 
-                // Get last 3 games from wishlist (most recently added)
+                // Phase 1: Quick display - show last 3 games from wishlist
                 const totalGames = data.response.items.length;
-                const games = data.response.items.slice(Math.max(0, totalGames - 3));
+                const initialGames = data.response.items.slice(Math.max(0, totalGames - 3));
                 
                 // Immediately show game cards with images and loading text
-                games.forEach(item => {
+                initialGames.forEach(item => {
                     const gameCard = createGameCard(item.appid);
                     contentEl.appendChild(gameCard);
                 });
                 
-                // Fetch details for each game and update cards as data arrives
-                const detailsPromises = games.map(item => updateGameDetails(item.appid));
+                // Fetch details for initial 3 games and update their cards
+                const initialDetailsPromises = initialGames.map(item => updateGameDetails(item.appid, true));
+                await Promise.all(initialDetailsPromises);
                 
-                // Wait for all details to load
-                await Promise.all(detailsPromises);
+                // Phase 2: Background process to find and display top 3 most discounted games
+                // This runs asynchronously without blocking
+                (async () => {
+                    try {
+                        // Fetch details for ALL games (without updating DOM)
+                        const allGames = data.response.items;
+                        const allDetailsPromises = allGames.map(item => updateGameDetails(item.appid, false));
+                        const allDetails = await Promise.all(allDetailsPromises);
+                        
+                        // Filter valid results and sort by discount percentage (highest first)
+                        const validDetails = allDetails
+                            .filter(d => d !== null)
+                            .sort((a, b) => b.discountValue - a.discountValue);
+                        
+                        // Get top 3 most discounted games
+                        const top3Discounted = validDetails.slice(0, 3);
+                        
+                        // Check if top 3 discounted are different from initial display
+                        const initialAppIds = initialGames.map(g => g.appid);
+                        const top3AppIds = top3Discounted.map(d => d.appId);
+                        
+                        // Only update if different
+                        const needsUpdate = !top3AppIds.every(id => initialAppIds.includes(id)) || 
+                                          top3AppIds.length !== initialAppIds.length;
+                        
+                        if (needsUpdate && top3Discounted.length > 0) {
+                            // Clear current display
+                            contentEl.innerHTML = '';
+                            
+                            // Create and show cards for top 3 most discounted games
+                            for (const detail of top3Discounted) {
+                                const gameCard = createGameCard(detail.appId);
+                                contentEl.appendChild(gameCard);
+                                // Update with actual details
+                                await updateGameDetails(detail.appId, true);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error finding top discounted games:', error);
+                        // If finding top games fails, keep showing the initial 3
+                    }
+                })();
 
             } catch (error) {
                 console.error('Error fetching Steam wishlist:', error);
