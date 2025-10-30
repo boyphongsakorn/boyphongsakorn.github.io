@@ -122,7 +122,7 @@
                     
                     try {
                         // Fetch game details from Steam Store API
-                        const detailsResponse = await fetch(`https://anywhere.pwisetthon.com/https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
+                        const detailsResponse = await fetch(`https://store.steampowered.com/api/appdetails?appids=${appId}&cc=th`);
                         
                         // Validate HTTP response
                         if (!detailsResponse.ok) {
