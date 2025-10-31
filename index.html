@@ -14,19 +14,21 @@
         
         <ul class="space-y-3">
             <li id="twitchbanneralert" class="hidden">
-                <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
-                    <img class="w-10 h-10 rounded-full inline mr-2" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Live indicator">
-                    <span class="text-blue-600 font-medium">กำลังไลฟ์ อยู่บน Twitch - ดูเลย!</span>
-                </a>
-            </li>
-            <li id="twitchpreviewbox" class="hidden">
-                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden">
-                    <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block">
-                        <img class="lazy w-full h-40 object-cover" data-src="https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" alt="Live stream preview of boyalone99 on Twitch">
-                        <div class="p-3">
-                            <span class="text-blue-600 font-medium">Live on Twitch</span>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Left box: Alert banner -->
+                    <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                        <img class="w-10 h-10 rounded-full inline mr-2" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Live indicator">
+                        <span class="text-blue-600 font-medium">กำลังไลฟ์ อยู่บน Twitch - ดูเลย!</span>
                     </a>
+                    <!-- Right box: Preview image card -->
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden">
+                        <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block">
+                            <img class="lazy w-full h-40 object-cover" data-src="https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" alt="Live stream preview of boyalone99 on Twitch">
+                            <div class="p-3">
+                                <span class="text-blue-600 font-medium">Live on Twitch</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </li>
             <li><a href="https://store.line.me/themeshop/product/2e590572-878f-484e-a4d6-6c6cff4a55fb/th" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
@@ -129,8 +131,6 @@
                 if (data != "offline") {
                     // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
-                    // remove class hidden from Twitch preview box
-                    document.getElementById("twitchpreviewbox").classList.remove("hidden");
                     // hide the regular Twitch link when live banner is shown
                     document.getElementById("twitchregularlink").style.display = "none";
                 }
