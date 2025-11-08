@@ -773,6 +773,11 @@
                     eventUrl = `https://github.com/${repoName}`;
             }
 
+            // If no specific URL was found, fallback to the repository URL
+            if (!eventUrl) {
+                eventUrl = `https://github.com/${repoName}`;
+            }
+
             // Update UI based on whether we have a URL
             if (eventUrl && linkEl && detailEl && detailNoLinkEl) {
                 linkEl.href = eventUrl;
