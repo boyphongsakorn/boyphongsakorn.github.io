@@ -84,12 +84,28 @@
             <li><a href="https://discordbot.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Discord Bot</span>
             </a></li>
-            <li><a href="https://www.battlemetrics.com/servers/palworld/33185507" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
-                <span class="text-blue-600 font-medium">Free Palworld Server</span>
-            </a></li>
-            <li><a href="https://www.battlemetrics.com/servers/palworld/35658269" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
-                <span class="text-blue-600 font-medium">EXPx10 Server</span>
-            </a></li>
+            <li>
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                    <a href="https://www.battlemetrics.com/servers/palworld/33185507" class="flex-1">
+                        <span class="text-blue-600 font-medium">Free Palworld Server</span>
+                    </a>
+                    <!-- Toggle button for Palworld servers section -->
+                    <button id="togglePalworldServers" class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none ml-2">
+                        <svg id="togglePalworldIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </li>
+            
+            <!-- Collapsible Palworld servers section -->
+            <li id="palworldServersSection" class="hidden">
+                <div class="p-4">
+                    <a href="https://www.battlemetrics.com/servers/palworld/35658269" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                        <span class="text-blue-600 font-medium">EXPx10 Server</span>
+                    </a>
+                </div>
+            </li>
             <li><a href="https://mkrm.pwisetthon.com" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">Project สแกนเพิ่ม Playlist เพลง</span>
             </a></li>
@@ -285,6 +301,23 @@
                 toggleIcon.classList.remove('rotate-180');
             } else {
                 toggleIcon.classList.add('rotate-180');
+            }
+        });
+
+        // Palworld Servers Toggle Functionality
+        const togglePalworldButton = document.getElementById('togglePalworldServers');
+        const togglePalworldIcon = document.getElementById('togglePalworldIcon');
+        const palworldServersSection = document.getElementById('palworldServersSection');
+        
+        togglePalworldButton.addEventListener('click', function() {
+            // Toggle the hidden class
+            palworldServersSection.classList.toggle('hidden');
+            
+            // Rotate the icon (180 degrees when expanded)
+            if (palworldServersSection.classList.contains('hidden')) {
+                togglePalworldIcon.classList.remove('rotate-180');
+            } else {
+                togglePalworldIcon.classList.add('rotate-180');
             }
         });
 
