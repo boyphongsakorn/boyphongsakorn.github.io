@@ -785,6 +785,19 @@
                         eventUrl = `https://github.com/${repoName}`;
                     }
                     break;
+                case 'PullRequestReviewEvent':
+                    const reviewAction = latestEvent.payload.review && latestEvent.payload.review.state === 'approved' 
+                        ? 'Approve' 
+                        : 'Review';
+                    eventDetail = `${reviewAction} ใน ${repoName}`;
+                    if (latestEvent.payload.review && latestEvent.payload.review.html_url) {
+                        eventUrl = latestEvent.payload.review.html_url;
+                    } else if (latestEvent.payload.pull_request && latestEvent.payload.pull_request.html_url) {
+                        eventUrl = latestEvent.payload.pull_request.html_url;
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
+                    }
+                    break;
                 case 'WatchEvent':
                     eventDetail = `Star ${repoName}`;
                     eventUrl = `https://github.com/${repoName}`;
