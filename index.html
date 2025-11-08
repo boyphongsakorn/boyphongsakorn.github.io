@@ -117,6 +117,18 @@
                             </div>
                         </div>
                     </div>
+                    <div id="githubActivityBox" class="w-full">
+                        <div class="block p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-800 font-medium">💻 GitHub:</span>
+                                <span id="githubActivityStatus" class="text-gray-600">กำลังโหลด...</span>
+                            </div>
+                            <div class="text-sm text-gray-500 mt-2">
+                                กิจกรรมล่าสุด: <span id="githubLastActivity">-</span><br>
+                                <span id="githubActivityDetail" class="text-gray-600">-</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -663,11 +675,96 @@
             }
         }
 
+    // GitHub Activity Functionality
+    async function fetchGithubActivity() {
+        const username = 'boyphongsakorn';
+        const statusEl = document.getElementById('githubActivityStatus');
+        const lastActivityEl = document.getElementById('githubLastActivity');
+        const detailEl = document.getElementById('githubActivityDetail');
+
+        try {
+            const response = await fetch(`https://api.github.com/users/${username}/events/public`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch GitHub activity');
+            }
+
+            const events = await response.json();
+            
+            if (!events || events.length === 0) {
+                if (statusEl) statusEl.textContent = 'ไม่มีกิจกรรม';
+                if (lastActivityEl) lastActivityEl.textContent = '-';
+                if (detailEl) detailEl.textContent = '-';
+                return;
+            }
+
+            // Get the most recent event
+            const latestEvent = events[0];
+            const eventDate = new Date(latestEvent.created_at);
+            
+            // Update status
+            if (statusEl) {
+                statusEl.textContent = 'ใช้งานล่าสุด';
+                statusEl.className = 'text-green-600 font-semibold';
+            }
+
+            // Update last activity time
+            if (lastActivityEl) {
+                lastActivityEl.textContent = formatThaiTimeDifference(latestEvent.created_at);
+            }
+
+            // Format event detail
+            let eventDetail = '';
+            switch (latestEvent.type) {
+                case 'PushEvent':
+                    const commits = latestEvent.payload.commits ? latestEvent.payload.commits.length : 0;
+                    eventDetail = `Push ${commits} commit(s) ไปยัง ${latestEvent.repo.name}`;
+                    break;
+                case 'CreateEvent':
+                    eventDetail = `สร้าง ${latestEvent.payload.ref_type} ใน ${latestEvent.repo.name}`;
+                    break;
+                case 'DeleteEvent':
+                    eventDetail = `ลบ ${latestEvent.payload.ref_type} ใน ${latestEvent.repo.name}`;
+                    break;
+                case 'IssuesEvent':
+                    eventDetail = `${latestEvent.payload.action} issue ใน ${latestEvent.repo.name}`;
+                    break;
+                case 'PullRequestEvent':
+                    eventDetail = `${latestEvent.payload.action} PR ใน ${latestEvent.repo.name}`;
+                    break;
+                case 'WatchEvent':
+                    eventDetail = `Star ${latestEvent.repo.name}`;
+                    break;
+                case 'ForkEvent':
+                    eventDetail = `Fork ${latestEvent.repo.name}`;
+                    break;
+                default:
+                    eventDetail = `${latestEvent.type.replace('Event', '')} ใน ${latestEvent.repo.name}`;
+            }
+
+            if (detailEl) {
+                detailEl.textContent = eventDetail;
+                detailEl.className = 'text-gray-800';
+            }
+
+        } catch (error) {
+            console.error('Error fetching GitHub activity:', error);
+            if (statusEl) {
+                statusEl.textContent = 'ไม่สามารถโหลดข้อมูลได้';
+                statusEl.className = 'text-red-600';
+            }
+            if (lastActivityEl) lastActivityEl.textContent = '-';
+            if (detailEl) detailEl.textContent = '-';
+        }
+    }
+
     // Load Steam wishlist when page loads
     fetchSteamWishlist();
 
     // Load lottery data one time when page loads
     fetchLotteryData();
+
+    // Load GitHub activity when page loads
+    fetchGithubActivity();
     </script>
 </body>
 </html>
