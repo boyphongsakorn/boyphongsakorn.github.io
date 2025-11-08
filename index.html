@@ -702,8 +702,27 @@
                 return;
             }
 
-            // Get the most recent event
-            const latestEvent = events[0];
+            // Find the most recent valid event (skip PushEvents with 0 commits)
+            let latestEvent = null;
+            for (const event of events) {
+                if (event.type === 'PushEvent') {
+                    const commits = event.payload.commits ? event.payload.commits.length : 0;
+                    if (commits === 0) {
+                        continue; // Skip PushEvent with 0 commits
+                    }
+                }
+                latestEvent = event;
+                break;
+            }
+
+            // If no valid event found
+            if (!latestEvent) {
+                if (statusEl) statusEl.textContent = 'ไม่มีกิจกรรม';
+                if (lastActivityEl) lastActivityEl.textContent = '-';
+                if (detailNoLinkEl) detailNoLinkEl.textContent = '-';
+                return;
+            }
+
             const eventDate = new Date(latestEvent.created_at);
             
             // Update status
