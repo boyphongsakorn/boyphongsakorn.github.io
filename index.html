@@ -731,7 +731,11 @@
                         const latestCommit = latestEvent.payload.commits[latestEvent.payload.commits.length - 1];
                         if (latestCommit.sha) {
                             eventUrl = `https://github.com/${repoName}/commit/${latestCommit.sha}`;
+                        } else {
+                            eventUrl = `https://github.com/${repoName}`;
                         }
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
                     }
                     break;
                 case 'CreateEvent':
