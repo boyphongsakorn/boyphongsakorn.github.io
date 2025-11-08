@@ -754,12 +754,16 @@
                     eventDetail = `${latestEvent.payload.action} issue ใน ${repoName}`;
                     if (latestEvent.payload.issue && latestEvent.payload.issue.html_url) {
                         eventUrl = latestEvent.payload.issue.html_url;
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
                     }
                     break;
                 case 'PullRequestEvent':
                     eventDetail = `${latestEvent.payload.action} PR ใน ${repoName}`;
                     if (latestEvent.payload.pull_request && latestEvent.payload.pull_request.html_url) {
                         eventUrl = latestEvent.payload.pull_request.html_url;
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
                     }
                     break;
                 case 'WatchEvent':
@@ -770,16 +774,13 @@
                     eventDetail = `Fork ${repoName}`;
                     if (latestEvent.payload.forkee && latestEvent.payload.forkee.html_url) {
                         eventUrl = latestEvent.payload.forkee.html_url;
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
                     }
                     break;
                 default:
                     eventDetail = `${latestEvent.type.replace('Event', '')} ใน ${repoName}`;
                     eventUrl = `https://github.com/${repoName}`;
-            }
-
-            // If no specific URL was found, fallback to the repository URL
-            if (!eventUrl) {
-                eventUrl = `https://github.com/${repoName}`;
             }
 
             // Update UI based on whether we have a URL
