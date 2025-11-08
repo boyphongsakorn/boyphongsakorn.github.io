@@ -125,7 +125,10 @@
                             </div>
                             <div class="text-sm text-gray-500 mt-2">
                                 กิจกรรมล่าสุด: <span id="githubLastActivity">-</span><br>
-                                <span id="githubActivityDetail" class="text-gray-600">-</span>
+                                <a id="githubActivityLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden">
+                                    <span id="githubActivityDetail" class="text-blue-600 hover:text-blue-800 hover:underline">-</span>
+                                </a>
+                                <span id="githubActivityDetailNoLink" class="text-gray-600">-</span>
                             </div>
                         </div>
                     </div>
@@ -681,6 +684,8 @@
         const statusEl = document.getElementById('githubActivityStatus');
         const lastActivityEl = document.getElementById('githubLastActivity');
         const detailEl = document.getElementById('githubActivityDetail');
+        const detailNoLinkEl = document.getElementById('githubActivityDetailNoLink');
+        const linkEl = document.getElementById('githubActivityLink');
 
         try {
             const response = await fetch(`https://api.github.com/users/${username}/events/public`);
@@ -693,7 +698,7 @@
             if (!events || events.length === 0) {
                 if (statusEl) statusEl.textContent = 'ไม่มีกิจกรรม';
                 if (lastActivityEl) lastActivityEl.textContent = '-';
-                if (detailEl) detailEl.textContent = '-';
+                if (detailNoLinkEl) detailNoLinkEl.textContent = '-';
                 return;
             }
 
@@ -712,38 +717,72 @@
                 lastActivityEl.textContent = formatThaiTimeDifference(latestEvent.created_at);
             }
 
-            // Format event detail
+            // Format event detail and determine URL
             let eventDetail = '';
+            let eventUrl = null;
+            const repoName = latestEvent.repo.name;
+            
             switch (latestEvent.type) {
                 case 'PushEvent':
                     const commits = latestEvent.payload.commits ? latestEvent.payload.commits.length : 0;
-                    eventDetail = `Push ${commits} commit(s) ไปยัง ${latestEvent.repo.name}`;
+                    eventDetail = `Push ${commits} commit(s) ไปยัง ${repoName}`;
+                    // Get the latest commit URL
+                    if (latestEvent.payload.commits && latestEvent.payload.commits.length > 0) {
+                        const latestCommit = latestEvent.payload.commits[latestEvent.payload.commits.length - 1];
+                        if (latestCommit.sha) {
+                            eventUrl = `https://github.com/${repoName}/commit/${latestCommit.sha}`;
+                        }
+                    }
                     break;
                 case 'CreateEvent':
-                    eventDetail = `สร้าง ${latestEvent.payload.ref_type} ใน ${latestEvent.repo.name}`;
+                    eventDetail = `สร้าง ${latestEvent.payload.ref_type} ใน ${repoName}`;
+                    if (latestEvent.payload.ref) {
+                        eventUrl = `https://github.com/${repoName}/tree/${latestEvent.payload.ref}`;
+                    } else {
+                        eventUrl = `https://github.com/${repoName}`;
+                    }
                     break;
                 case 'DeleteEvent':
-                    eventDetail = `ลบ ${latestEvent.payload.ref_type} ใน ${latestEvent.repo.name}`;
+                    eventDetail = `ลบ ${latestEvent.payload.ref_type} ใน ${repoName}`;
+                    eventUrl = `https://github.com/${repoName}`;
                     break;
                 case 'IssuesEvent':
-                    eventDetail = `${latestEvent.payload.action} issue ใน ${latestEvent.repo.name}`;
+                    eventDetail = `${latestEvent.payload.action} issue ใน ${repoName}`;
+                    if (latestEvent.payload.issue && latestEvent.payload.issue.html_url) {
+                        eventUrl = latestEvent.payload.issue.html_url;
+                    }
                     break;
                 case 'PullRequestEvent':
-                    eventDetail = `${latestEvent.payload.action} PR ใน ${latestEvent.repo.name}`;
+                    eventDetail = `${latestEvent.payload.action} PR ใน ${repoName}`;
+                    if (latestEvent.payload.pull_request && latestEvent.payload.pull_request.html_url) {
+                        eventUrl = latestEvent.payload.pull_request.html_url;
+                    }
                     break;
                 case 'WatchEvent':
-                    eventDetail = `Star ${latestEvent.repo.name}`;
+                    eventDetail = `Star ${repoName}`;
+                    eventUrl = `https://github.com/${repoName}`;
                     break;
                 case 'ForkEvent':
-                    eventDetail = `Fork ${latestEvent.repo.name}`;
+                    eventDetail = `Fork ${repoName}`;
+                    if (latestEvent.payload.forkee && latestEvent.payload.forkee.html_url) {
+                        eventUrl = latestEvent.payload.forkee.html_url;
+                    }
                     break;
                 default:
-                    eventDetail = `${latestEvent.type.replace('Event', '')} ใน ${latestEvent.repo.name}`;
+                    eventDetail = `${latestEvent.type.replace('Event', '')} ใน ${repoName}`;
+                    eventUrl = `https://github.com/${repoName}`;
             }
 
-            if (detailEl) {
+            // Update UI based on whether we have a URL
+            if (eventUrl && linkEl && detailEl && detailNoLinkEl) {
+                linkEl.href = eventUrl;
+                linkEl.classList.remove('hidden');
                 detailEl.textContent = eventDetail;
-                detailEl.className = 'text-gray-800';
+                detailNoLinkEl.classList.add('hidden');
+            } else if (detailNoLinkEl && detailEl && linkEl) {
+                detailNoLinkEl.textContent = eventDetail;
+                detailNoLinkEl.classList.remove('hidden');
+                linkEl.classList.add('hidden');
             }
 
         } catch (error) {
@@ -753,7 +792,7 @@
                 statusEl.className = 'text-red-600';
             }
             if (lastActivityEl) lastActivityEl.textContent = '-';
-            if (detailEl) detailEl.textContent = '-';
+            if (detailNoLinkEl) detailNoLinkEl.textContent = '-';
         }
     }
 
