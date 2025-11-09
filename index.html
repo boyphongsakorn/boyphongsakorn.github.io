@@ -14,19 +14,22 @@
         
         <ul class="space-y-3">
             <li id="twitchbanneralert" class="hidden">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <!-- Left box 1: Alert banner -->
-                    <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="flex items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200 h-24">
-                        <img class="w-10 h-10 rounded-full mr-2" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Live indicator">
-                        <span class="text-blue-600 font-medium">กำลังไลฟ์ อยู่บน Twitch - ดูเลย!</span>
-                    </a>
-                    <!-- Left box 2: Game info -->
-                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4 flex flex-col justify-between h-24">
-                        <div class="text-gray-800 font-medium">🎮 กำลังเล่น:</div>
-                        <div id="twitchGameName" class="text-blue-600 text-sm truncate">กำลังโหลด...</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Left column: 2 stacked boxes -->
+                    <div class="flex flex-col gap-3">
+                        <!-- Top: Alert banner -->
+                        <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="flex items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                            <img class="w-10 h-10 rounded-full mr-2" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Red_circle.gif" alt="Live indicator">
+                            <span class="text-blue-600 font-medium">กำลังไลฟ์ อยู่บน Twitch - ดูเลย!</span>
+                        </a>
+                        <!-- Bottom: Game info -->
+                        <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4 flex flex-col justify-between">
+                            <div class="text-gray-800 font-medium">🎮 กำลังเล่น:</div>
+                            <div id="twitchGameName" class="text-blue-600 text-sm truncate">กำลังโหลด...</div>
+                        </div>
                     </div>
-                    <!-- Right box: Preview image card -->
-                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden h-24">
+                    <!-- Right column: Preview image card -->
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden">
                         <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block h-full">
                             <img class="lazy w-full h-full object-cover" data-src="https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1280x720.jpg" alt="Live stream preview of boyalone99 on Twitch">
                         </a>
