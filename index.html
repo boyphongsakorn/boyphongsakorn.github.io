@@ -38,11 +38,11 @@
             </li>
             
             <!-- Work Experience Toggle Button -->
-            <li id="workExperienceToggle">
-                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+            <li>
+                <div id="toggleWorkExperience" class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                     <span class="text-blue-600 font-medium">ประสบการณ์ทำงาน</span>
                     <!-- Toggle button for work experience section -->
-                    <button id="toggleWorkExperience" class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none ml-2">
+                    <button class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none ml-2">
                         <svg id="toggleWorkIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                         </svg>
@@ -69,8 +69,8 @@
                         </div>
                     </div>
                     <div class="text-gray-600 text-sm">
-                        <p class="mb-2">🚀 ทักษะ: Web Development, Backend Development, API Development</p>
-                        <p>📚 เทคโนโลยี: JavaScript, Node.js, Python, PHP, MySQL</p>
+                        <p class="mb-2">🚀 ทักษะ: Backend/API Development, Database, Deploy Tools</p>
+                        <p>📚 เทคโนโลยี: JavaScript, Node.js, PHP, MySQL, Java, Spring Boot, Express.js, Fastify, Docker, Docker Swarm, Jenkins</p>
                     </div>
                 </div>
             </li>
@@ -347,8 +347,6 @@
 
         // Load rain sensor data when page loads
         fetchRainSensor();
-        // Refresh rain sensor data every 5 minutes
-        setInterval(fetchRainSensor, 5 * 60 * 1000);
 
         // Card Bottom Toggle Functionality
         const toggleButton = document.getElementById('toggleCardBottom');
@@ -1000,9 +998,6 @@
     
     // Initialize work progress when page loads
     updateWorkProgress();
-    
-    // Update progress every hour to keep it current
-    setInterval(updateWorkProgress, 60 * 60 * 1000);
     </script>
 </body>
 </html>
