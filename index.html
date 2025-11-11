@@ -38,7 +38,7 @@
             </li>
             
             <!-- Work Experience Toggle Button -->
-            <li id="workExperienceToggle" class="hidden">
+            <li id="workExperienceToggle">
                 <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                     <span class="text-blue-600 font-medium">ประสบการณ์ทำงาน</span>
                     <!-- Toggle button for work experience section -->
@@ -51,7 +51,7 @@
             </li>
             
             <!-- Collapsible Work Experience Section -->
-            <li id="workExperienceSection" class="hidden">
+            <li id="workExperienceSection">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">💼 ประสบการณ์การทำงาน</h3>
                     <div class="mb-4">
@@ -231,11 +231,6 @@
                 if (isOnline) {
                     // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
-                    // show work experience toggle button
-                    const workToggleEl = document.getElementById("workExperienceToggle");
-                    if (workToggleEl) {
-                        workToggleEl.classList.remove("hidden");
-                    }
                     // hide the regular Twitch link when live banner is shown
                     document.getElementById("twitchregularlink").style.display = "none";
                     
