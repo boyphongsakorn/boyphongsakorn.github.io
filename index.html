@@ -36,6 +36,45 @@
                     </div>
                 </div>
             </li>
+            
+            <!-- Work Experience Toggle Button -->
+            <li id="workExperienceToggle">
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
+                    <span class="text-blue-600 font-medium">ประสบการณ์ทำงาน</span>
+                    <!-- Toggle button for work experience section -->
+                    <button id="toggleWorkExperience" class="p-2 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none ml-2">
+                        <svg id="toggleWorkIcon" class="w-6 h-6 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </li>
+            
+            <!-- Collapsible Work Experience Section -->
+            <li id="workExperienceSection" class="hidden">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">💼 ประสบการณ์การทำงาน</h3>
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-700 font-medium">Programmer</span>
+                            <span id="workDuration" class="text-blue-600 font-semibold">กำลังคำนวณ...</span>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                            <div id="workProgressBar" class="bg-gradient-to-r from-blue-500 to-purple-600 h-4 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-sm text-gray-500">
+                            <span id="workStartDate">เริ่มต้น: 2020</span>
+                            <span id="workCurrentYear">ปัจจุบัน: 2024</span>
+                        </div>
+                    </div>
+                    <div class="text-gray-600 text-sm">
+                        <p class="mb-2">🚀 ทักษะ: Web Development, Backend Development, API Development</p>
+                        <p>📚 เทคโนโลยี: JavaScript, Node.js, Python, PHP, MySQL</p>
+                    </div>
+                </div>
+            </li>
+            
             <li><a href="https://store.line.me/themeshop/product/2e590572-878f-484e-a4d6-6c6cff4a55fb/th" class="block p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
                 <span class="text-blue-600 font-medium">ธีมไลน์ง่ายดี (ธีมมืด)</span>
             </a></li>
@@ -164,9 +203,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.8/dist/lazyload.min.js"></script>
 
     <script defer>
-        const lazyLoadInstance = new LazyLoad({
-            elements_selector: ".lazy"
-        });
+        // Initialize LazyLoad if available
+        if (typeof LazyLoad !== 'undefined') {
+            const lazyLoadInstance = new LazyLoad({
+                elements_selector: ".lazy"
+            });
+        }
 
         //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the list item
         fetch('https://localpost.teamquadb.in.th/twitchstatus')
@@ -324,6 +366,25 @@
                 toggleIcon.classList.add('rotate-180');
             }
         });
+
+        // Work Experience Toggle Functionality
+        const toggleWorkButton = document.getElementById('toggleWorkExperience');
+        const toggleWorkIcon = document.getElementById('toggleWorkIcon');
+        const workExperienceSection = document.getElementById('workExperienceSection');
+        
+        if (toggleWorkButton && toggleWorkIcon && workExperienceSection) {
+            toggleWorkButton.addEventListener('click', function() {
+                // Toggle the hidden class
+                workExperienceSection.classList.toggle('hidden');
+                
+                // Rotate the icon (180 degrees when expanded)
+                if (workExperienceSection.classList.contains('hidden')) {
+                    toggleWorkIcon.classList.remove('rotate-180');
+                } else {
+                    toggleWorkIcon.classList.add('rotate-180');
+                }
+            });
+        }
 
         // Steam Wishlist Functionality
         function createGameCard(appId) {
@@ -886,6 +947,62 @@
 
     // Load GitHub activity when page loads
     fetchGithubActivity();
+
+    // Work Experience Progress Bar Functionality
+    function updateWorkProgress() {
+        // Set the start date (adjust this to the actual start date)
+        const startDate = new Date('2020-01-01');
+        const currentDate = new Date();
+        
+        // Calculate the difference in years (with decimal precision)
+        const diffTime = currentDate - startDate;
+        const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+        
+        // Calculate months and years for display
+        const years = Math.floor(diffYears);
+        const months = Math.floor((diffYears - years) * 12);
+        
+        // Update duration text
+        const durationEl = document.getElementById('workDuration');
+        if (durationEl) {
+            if (years > 0 && months > 0) {
+                durationEl.textContent = `${years} ปี ${months} เดือน`;
+            } else if (years > 0) {
+                durationEl.textContent = `${years} ปี`;
+            } else {
+                durationEl.textContent = `${months} เดือน`;
+            }
+        }
+        
+        // Update start date and current year
+        const startDateEl = document.getElementById('workStartDate');
+        const currentYearEl = document.getElementById('workCurrentYear');
+        if (startDateEl) {
+            startDateEl.textContent = `เริ่มต้น: ${startDate.getFullYear()}`;
+        }
+        if (currentYearEl) {
+            currentYearEl.textContent = `ปัจจุบัน: ${currentDate.getFullYear()}`;
+        }
+        
+        // Calculate progress percentage (assuming 10 years as 100%)
+        const targetYears = 10;
+        const progressPercent = Math.min((diffYears / targetYears) * 100, 100);
+        
+        // Animate progress bar
+        const progressBar = document.getElementById('workProgressBar');
+        if (progressBar) {
+            // Start animation after a short delay
+            setTimeout(() => {
+                progressBar.style.width = `${progressPercent}%`;
+            }, 100);
+        }
+    }
+    
+    // Initialize work progress when page loads
+    updateWorkProgress();
+    
+    // Update progress every hour to keep it current
+    setInterval(updateWorkProgress, 60 * 60 * 1000);
     </script>
 </body>
 </html>
