@@ -288,6 +288,9 @@
                 const songNameEl = document.getElementById('spotifySongName');
                 const artistNameEl = document.getElementById('spotifyArtistName');
 
+                // Access attributes object from response
+                const attributes = data.attributes || {};
+
                 // Show Spotify only when Twitch is NOT live AND Spotify is playing
                 if (data.state && data.state.toLowerCase() === 'playing' && !isTwitchLive) {
                     // Display Spotify info
@@ -295,20 +298,20 @@
                         spotifyContainer.classList.remove('hidden');
                     }
 
-                    // Update album art
-                    if (albumArtEl && data.image) {
-                        albumArtEl.src = data.image;
-                        albumArtEl.alt = data.song || 'Album art';
+                    // Update album art from entity_picture with hass domain prefix
+                    if (albumArtEl && attributes.entity_picture) {
+                        albumArtEl.src = 'https://hass.pwisetthon.com' + attributes.entity_picture;
+                        albumArtEl.alt = attributes.media_title || 'Album art';
                     }
 
-                    // Update song name
-                    if (songNameEl && data.song) {
-                        songNameEl.textContent = data.song;
+                    // Update song name from media_title
+                    if (songNameEl && attributes.media_title) {
+                        songNameEl.textContent = attributes.media_title;
                     }
 
-                    // Update artist name
-                    if (artistNameEl && data.artist) {
-                        artistNameEl.textContent = data.artist;
+                    // Update artist name from media_artist
+                    if (artistNameEl && attributes.media_artist) {
+                        artistNameEl.textContent = attributes.media_artist;
                     }
                 } else {
                     // Hide Spotify section if Twitch is live or Spotify is not playing
