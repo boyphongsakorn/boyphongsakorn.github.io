@@ -37,6 +37,28 @@
                 </div>
             </li>
             
+            <!-- Spotify Now Playing (separate from Twitch) -->
+            <li id="spotifyNowPlaying" class="hidden">
+                <a id="spotifyLink" href="#" target="_blank" rel="noopener noreferrer" class="block">
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
+                        <div class="flex items-center gap-3">
+                            <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover flex-shrink-0" src="" alt="Album art">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
+                                <div class="text-blue-600 font-semibold truncate">
+                                    <span id="spotifySongName">-</span><span id="spotifyComma" class="hidden">, </span><span id="spotifyArtistName" class="text-gray-600">-</span>
+                                </div>
+                            </div>
+                            <div id="spotifyTime" class="text-gray-500 text-xs text-center flex-shrink-0">
+                                <div id="spotifyCurrentTime">0:00</div>
+                                <div>/</div>
+                                <div id="spotifyTotalTime">0:00</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            
             <!-- Work Experience Toggle Button -->
             <li>
                 <div id="toggleWorkExperience" class="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 border border-gray-200">
@@ -210,6 +232,9 @@
             });
         }
 
+        // Global variable to track Twitch live status
+        let isTwitchLive = false;
+
         //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the list item
         fetch('https://localpost.teamquadb.in.th/twitchstatus')
             .then(response => response.text())
@@ -228,6 +253,8 @@
                                  (typeof statusData === 'string' && statusData !== "offline") ||
                                  (data !== "offline");
                 
+                isTwitchLive = isOnline;
+                
                 if (isOnline) {
                     // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
@@ -244,11 +271,97 @@
                         }
                     }
                 }
+                
+                // Fetch Spotify data regardless of Twitch status
+                fetchSpotifyNowPlaying();
             })
             .catch(error => {
                 // Silently fail - banner remains hidden if API is unavailable
                 console.error('Error fetching Twitch status:', error);
+                // Still try to fetch Spotify even if Twitch status fails
+                fetchSpotifyNowPlaying();
             });
+
+        // Helper function to format time in MM:SS
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Spotify Now Playing Functionality
+        async function fetchSpotifyNowPlaying() {
+            try {
+                const response = await fetch('https://anywhere.pwisetthon.com/http://192.168.31.227:1880/endpoint/spotify');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch Spotify data');
+                }
+
+                const data = await response.json();
+                const spotifyContainer = document.getElementById('spotifyNowPlaying');
+                const albumArtEl = document.getElementById('spotifyAlbumArt');
+                const songNameEl = document.getElementById('spotifySongName');
+                const artistNameEl = document.getElementById('spotifyArtistName');
+                const currentTimeEl = document.getElementById('spotifyCurrentTime');
+                const totalTimeEl = document.getElementById('spotifyTotalTime');
+                const linkEl = document.getElementById('spotifyLink');
+
+                // Access attributes object from response
+                const attributes = data.attributes || {};
+
+                // Show Spotify only when Twitch is NOT live AND Spotify is playing
+                if (data.state && data.state.toLowerCase() === 'playing' && !isTwitchLive) {
+                    // Display Spotify info
+                    if (spotifyContainer) {
+                        spotifyContainer.classList.remove('hidden');
+                    }
+
+                    // Update album art from entity_picture with hass domain prefix
+                    if (albumArtEl && attributes.entity_picture) {
+                        albumArtEl.src = 'https://hass.pwisetthon.com' + attributes.entity_picture;
+                        albumArtEl.alt = attributes.media_title || 'Album art';
+                    }
+
+                    // Update song name from media_title
+                    if (songNameEl && attributes.media_title) {
+                        songNameEl.textContent = attributes.media_title;
+                    }
+
+                    // Update artist name from media_artist
+                    if (artistNameEl && attributes.media_artist) {
+                        artistNameEl.textContent = attributes.media_artist;
+                    }
+
+                    // Show comma separator when both song and artist are present
+                    const commaEl = document.getElementById('spotifyComma');
+                    if (commaEl && attributes.media_title && attributes.media_artist) {
+                        commaEl.classList.remove('hidden');
+                    }
+
+                    // Update time display (current position / total duration)
+                    if (currentTimeEl && totalTimeEl && attributes.media_position !== undefined && attributes.media_duration) {
+                        currentTimeEl.textContent = formatTime(attributes.media_position);
+                        totalTimeEl.textContent = formatTime(attributes.media_duration);
+                    }
+
+                    // Update Spotify link from media_content_id
+                    if (linkEl && attributes.media_content_id) {
+                        // Convert spotify:track:ID to https://open.spotify.com/track/ID
+                        const trackId = attributes.media_content_id.replace('spotify:track:', '');
+                        linkEl.href = `https://open.spotify.com/track/${trackId}`;
+                    }
+                } else {
+                    // Hide Spotify section if Twitch is live or Spotify is not playing
+                    if (spotifyContainer) {
+                        spotifyContainer.classList.add('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching Spotify data:', error);
+                // Silently fail - Spotify section remains hidden if API is unavailable
+            }
+        }
 
         // Rain Sensor Functionality
         const RAIN_STATE_RAINING = 'on';
