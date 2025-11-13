@@ -39,16 +39,19 @@
             
             <!-- Spotify Now Playing (separate from Twitch) -->
             <li id="spotifyNowPlaying" class="hidden">
-                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
-                    <div class="flex items-center gap-3">
-                        <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover" src="" alt="Album art">
-                        <div class="flex-1 min-w-0">
-                            <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
-                            <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
-                            <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
+                <a id="spotifyLink" href="#" target="_blank" rel="noopener noreferrer" class="block">
+                    <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
+                        <div class="flex items-center gap-3">
+                            <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover flex-shrink-0" src="" alt="Album art">
+                            <div class="flex-1 min-w-0">
+                                <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
+                                <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
+                                <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
+                                <div id="spotifyTime" class="text-gray-500 text-xs mt-1">-</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </li>
             
             <!-- Work Experience Toggle Button -->
@@ -274,6 +277,14 @@
                 fetchSpotifyNowPlaying();
             });
 
+        // Helper function to format time in MM:SS
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
         // Spotify Now Playing Functionality
         async function fetchSpotifyNowPlaying() {
             try {
@@ -287,6 +298,8 @@
                 const albumArtEl = document.getElementById('spotifyAlbumArt');
                 const songNameEl = document.getElementById('spotifySongName');
                 const artistNameEl = document.getElementById('spotifyArtistName');
+                const timeEl = document.getElementById('spotifyTime');
+                const linkEl = document.getElementById('spotifyLink');
 
                 // Access attributes object from response
                 const attributes = data.attributes || {};
@@ -312,6 +325,20 @@
                     // Update artist name from media_artist
                     if (artistNameEl && attributes.media_artist) {
                         artistNameEl.textContent = attributes.media_artist;
+                    }
+
+                    // Update time display (current position / total duration)
+                    if (timeEl && attributes.media_position !== undefined && attributes.media_duration) {
+                        const currentTime = formatTime(attributes.media_position);
+                        const totalTime = formatTime(attributes.media_duration);
+                        timeEl.textContent = `${currentTime} / ${totalTime}`;
+                    }
+
+                    // Update Spotify link from media_content_id
+                    if (linkEl && attributes.media_content_id) {
+                        // Convert spotify:track:ID to https://open.spotify.com/track/ID
+                        const trackId = attributes.media_content_id.replace('spotify:track:', '');
+                        linkEl.href = `https://open.spotify.com/track/${trackId}`;
                     }
                 } else {
                     // Hide Spotify section if Twitch is live or Spotify is not playing
