@@ -27,6 +27,17 @@
                             <div class="text-gray-800 font-medium whitespace-nowrap">🎮 กำลังเล่น:</div>
                             <div id="twitchGameName" class="text-blue-600 text-sm truncate flex-1">กำลังโหลด...</div>
                         </div>
+                        <!-- Spotify Now Playing -->
+                        <div id="spotifyNowPlaying" class="hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
+                            <div class="flex items-center gap-3">
+                                <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover" src="" alt="Album art">
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
+                                    <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
+                                    <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- Right column: Preview image card -->
                     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden">
@@ -243,12 +254,63 @@
                             gameNameEl.textContent = 'ไม่มีข้อมูล';
                         }
                     }
+                    
+                    // Fetch Spotify now playing data when Twitch is live
+                    fetchSpotifyNowPlaying();
                 }
             })
             .catch(error => {
                 // Silently fail - banner remains hidden if API is unavailable
                 console.error('Error fetching Twitch status:', error);
             });
+
+        // Spotify Now Playing Functionality
+        async function fetchSpotifyNowPlaying() {
+            try {
+                const response = await fetch('https://anywhere.pwisetthon.com/http://192.168.31.227:1880/endpoint/spotify');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch Spotify data');
+                }
+
+                const data = await response.json();
+                const spotifyContainer = document.getElementById('spotifyNowPlaying');
+                const albumArtEl = document.getElementById('spotifyAlbumArt');
+                const songNameEl = document.getElementById('spotifySongName');
+                const artistNameEl = document.getElementById('spotifyArtistName');
+
+                // Check if state is "playing"
+                if (data.state && data.state.toLowerCase() === 'playing') {
+                    // Display Spotify info
+                    if (spotifyContainer) {
+                        spotifyContainer.classList.remove('hidden');
+                    }
+
+                    // Update album art
+                    if (albumArtEl && data.image) {
+                        albumArtEl.src = data.image;
+                        albumArtEl.alt = data.song || 'Album art';
+                    }
+
+                    // Update song name
+                    if (songNameEl && data.song) {
+                        songNameEl.textContent = data.song;
+                    }
+
+                    // Update artist name
+                    if (artistNameEl && data.artist) {
+                        artistNameEl.textContent = data.artist;
+                    }
+                } else {
+                    // Hide Spotify section if not playing
+                    if (spotifyContainer) {
+                        spotifyContainer.classList.add('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching Spotify data:', error);
+                // Silently fail - Spotify section remains hidden if API is unavailable
+            }
+        }
 
         // Rain Sensor Functionality
         const RAIN_STATE_RAINING = 'on';
