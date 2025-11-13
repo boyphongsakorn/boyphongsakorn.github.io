@@ -47,7 +47,11 @@
                                 <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
                                 <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
                                 <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
-                                <div id="spotifyTime" class="text-gray-500 text-xs mt-1">-</div>
+                            </div>
+                            <div id="spotifyTime" class="text-gray-500 text-xs text-center flex-shrink-0">
+                                <div id="spotifyCurrentTime">0:00</div>
+                                <div>/</div>
+                                <div id="spotifyTotalTime">0:00</div>
                             </div>
                         </div>
                     </div>
@@ -298,7 +302,8 @@
                 const albumArtEl = document.getElementById('spotifyAlbumArt');
                 const songNameEl = document.getElementById('spotifySongName');
                 const artistNameEl = document.getElementById('spotifyArtistName');
-                const timeEl = document.getElementById('spotifyTime');
+                const currentTimeEl = document.getElementById('spotifyCurrentTime');
+                const totalTimeEl = document.getElementById('spotifyTotalTime');
                 const linkEl = document.getElementById('spotifyLink');
 
                 // Access attributes object from response
@@ -328,10 +333,9 @@
                     }
 
                     // Update time display (current position / total duration)
-                    if (timeEl && attributes.media_position !== undefined && attributes.media_duration) {
-                        const currentTime = formatTime(attributes.media_position);
-                        const totalTime = formatTime(attributes.media_duration);
-                        timeEl.textContent = `${currentTime} / ${totalTime}`;
+                    if (currentTimeEl && totalTimeEl && attributes.media_position !== undefined && attributes.media_duration) {
+                        currentTimeEl.textContent = formatTime(attributes.media_position);
+                        totalTimeEl.textContent = formatTime(attributes.media_duration);
                     }
 
                     // Update Spotify link from media_content_id
