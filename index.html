@@ -45,8 +45,9 @@
                             <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover flex-shrink-0" src="" alt="Album art">
                             <div class="flex-1 min-w-0">
                                 <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
-                                <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
-                                <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
+                                <div class="text-blue-600 font-semibold truncate">
+                                    <span id="spotifySongName">-</span><span id="spotifyComma" class="hidden">, </span><span id="spotifyArtistName" class="text-gray-600">-</span>
+                                </div>
                             </div>
                             <div id="spotifyTime" class="text-gray-500 text-xs text-center flex-shrink-0">
                                 <div id="spotifyCurrentTime">0:00</div>
@@ -330,6 +331,12 @@
                     // Update artist name from media_artist
                     if (artistNameEl && attributes.media_artist) {
                         artistNameEl.textContent = attributes.media_artist;
+                    }
+
+                    // Show comma separator when both song and artist are present
+                    const commaEl = document.getElementById('spotifyComma');
+                    if (commaEl && attributes.media_title && attributes.media_artist) {
+                        commaEl.classList.remove('hidden');
                     }
 
                     // Update time display (current position / total duration)
