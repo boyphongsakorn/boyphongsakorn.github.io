@@ -27,23 +27,26 @@
                             <div class="text-gray-800 font-medium whitespace-nowrap">🎮 กำลังเล่น:</div>
                             <div id="twitchGameName" class="text-blue-600 text-sm truncate flex-1">กำลังโหลด...</div>
                         </div>
-                        <!-- Spotify Now Playing -->
-                        <div id="spotifyNowPlaying" class="hidden bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
-                            <div class="flex items-center gap-3">
-                                <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover" src="" alt="Album art">
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
-                                    <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
-                                    <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- Right column: Preview image card -->
                     <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden">
                         <a href="https://www.twitch.tv/boyalone99" target="_blank" rel="noopener noreferrer" class="block h-full">
                             <img class="lazy w-full h-full object-cover" data-src="https://static-cdn.jtvnw.net/previews-ttv/live_user_boyalone99-1680x720.jpg" alt="Live stream preview of boyalone99 on Twitch">
                         </a>
+                    </div>
+                </div>
+            </li>
+            
+            <!-- Spotify Now Playing (separate from Twitch) -->
+            <li id="spotifyNowPlaying" class="hidden">
+                <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 p-4">
+                    <div class="flex items-center gap-3">
+                        <img id="spotifyAlbumArt" class="w-16 h-16 rounded object-cover" src="" alt="Album art">
+                        <div class="flex-1 min-w-0">
+                            <div class="text-gray-800 font-medium text-sm mb-1">🎵 กำลังฟัง:</div>
+                            <div id="spotifySongName" class="text-blue-600 font-semibold truncate">-</div>
+                            <div id="spotifyArtistName" class="text-gray-600 text-sm truncate">-</div>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -221,6 +224,9 @@
             });
         }
 
+        // Global variable to track Twitch live status
+        let isTwitchLive = false;
+
         //fetch https://localpost.teamquadb.in.th/twitchstatus and if text is not "offline" then show the list item
         fetch('https://localpost.teamquadb.in.th/twitchstatus')
             .then(response => response.text())
@@ -239,6 +245,8 @@
                                  (typeof statusData === 'string' && statusData !== "offline") ||
                                  (data !== "offline");
                 
+                isTwitchLive = isOnline;
+                
                 if (isOnline) {
                     // remove class hidden from Twitch banner list item
                     document.getElementById("twitchbanneralert").classList.remove("hidden");
@@ -254,14 +262,16 @@
                             gameNameEl.textContent = 'ไม่มีข้อมูล';
                         }
                     }
-                    
-                    // Fetch Spotify now playing data when Twitch is live
-                    fetchSpotifyNowPlaying();
                 }
+                
+                // Fetch Spotify data regardless of Twitch status
+                fetchSpotifyNowPlaying();
             })
             .catch(error => {
                 // Silently fail - banner remains hidden if API is unavailable
                 console.error('Error fetching Twitch status:', error);
+                // Still try to fetch Spotify even if Twitch status fails
+                fetchSpotifyNowPlaying();
             });
 
         // Spotify Now Playing Functionality
@@ -278,8 +288,8 @@
                 const songNameEl = document.getElementById('spotifySongName');
                 const artistNameEl = document.getElementById('spotifyArtistName');
 
-                // Check if state is "playing"
-                if (data.state && data.state.toLowerCase() === 'playing') {
+                // Show Spotify only when Twitch is NOT live AND Spotify is playing
+                if (data.state && data.state.toLowerCase() === 'playing' && !isTwitchLive) {
                     // Display Spotify info
                     if (spotifyContainer) {
                         spotifyContainer.classList.remove('hidden');
@@ -301,7 +311,7 @@
                         artistNameEl.textContent = data.artist;
                     }
                 } else {
-                    // Hide Spotify section if not playing
+                    // Hide Spotify section if Twitch is live or Spotify is not playing
                     if (spotifyContainer) {
                         spotifyContainer.classList.add('hidden');
                     }
