@@ -1130,7 +1130,7 @@
     // Initialize work progress when page loads
     updateWorkProgress();
 
-    // Announcement Box Image Resize on Scroll
+    // Announcement Box Image Resize on Scroll and Timer
     (function() {
         const announcementImage = document.getElementById('announcementImage');
         const announcementBox = document.getElementById('announcementBox');
@@ -1143,16 +1143,22 @@
 
         let imageResized = false;
 
+        function resizeImage() {
+            if (!imageResized) {
+                imageResized = true;
+                announcementImage.classList.remove(...LARGE_SIZE);
+                announcementImage.classList.add(...SMALL_SIZE);
+            }
+        }
+
         function handleScroll() {
             const boxRect = announcementBox.getBoundingClientRect();
             const boxBottom = boxRect.bottom;
             
             // Check if user has scrolled past the announcement box (box is above viewport)
             // Once changed to small size, it stays that way
-            if (boxBottom < 0 && !imageResized) {
-                imageResized = true;
-                announcementImage.classList.remove(...LARGE_SIZE);
-                announcementImage.classList.add(...SMALL_SIZE);
+            if (boxBottom < 0) {
+                resizeImage();
             }
         }
 
@@ -1161,6 +1167,9 @@
 
         // Initial check in case page loads in a scrolled position
         handleScroll();
+
+        // Also resize image after 20 seconds
+        setTimeout(resizeImage, 20000);
     })();
     </script>
 </body>
