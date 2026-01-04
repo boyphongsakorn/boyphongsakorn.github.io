@@ -8,11 +8,29 @@
     <script defer src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
+    <!-- Red Announcement Box (hidden for now) -->
+    <div class="bg-red-600 text-white px-4 py-3 text-center font-medium shadow-md hidden">
+        <span class="text-lg">🎉 New Project or Announcement Here! 🎉</span>
+    </div>
+    
     <div class="max-w-4xl mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold mb-2 text-gray-800">PWisetthon</h1>
         <p class="text-gray-600 mb-6">ขี้เกียจทำละเว็บ กดตาม ul list ข้างล่างละกัน</p>
         
         <ul class="space-y-3">
+            <!-- Red Announcement Box as first list item -->
+            <li>
+                <a href="https://twitch.tv/boyalone99" class="block" target="_blank" rel="noopener noreferrer">
+                    <div class="bg-red-600 text-white rounded-lg shadow-sm border border-red-700 flex items-center justify-between">
+                        <div class="flex-1 p-4">
+                            <span class="inline-block bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded mb-2">NEW</span>
+                            <div class="text-lg font-medium">ใช้คำสั่ง !askai ใน Twitch Chat</div>
+                        </div>
+                        <img src="https://res.cloudinary.com/dstnfzzu4/image/upload/v1767518498/export-1767517703484-ezgif.com-optimize_paw4ge.gif" alt="Announcement" class="w-64 h-64 rounded-lg ml-4 flex-shrink-0">
+                    </div>
+                </a>
+            </li>
+            
             <li id="twitchbanneralert" class="hidden">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <!-- Left column: 2 stacked boxes -->
