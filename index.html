@@ -1141,23 +1141,18 @@
         const LARGE_SIZE = ['w-64', 'h-64'];
         const SMALL_SIZE = ['w-32', 'h-32'];
 
-        let hasScrolledPast = false;
+        let imageResized = false;
 
         function handleScroll() {
             const boxRect = announcementBox.getBoundingClientRect();
             const boxBottom = boxRect.bottom;
             
             // Check if user has scrolled past the announcement box (box is above viewport)
-            if (boxBottom < 0 && !hasScrolledPast) {
-                // User scrolled past the box
-                hasScrolledPast = true;
+            // Once changed to small size, it stays that way
+            if (boxBottom < 0 && !imageResized) {
+                imageResized = true;
                 announcementImage.classList.remove(...LARGE_SIZE);
                 announcementImage.classList.add(...SMALL_SIZE);
-            } else if (boxBottom >= 0 && hasScrolledPast) {
-                // User scrolled back up, restore original size
-                hasScrolledPast = false;
-                announcementImage.classList.remove(...SMALL_SIZE);
-                announcementImage.classList.add(...LARGE_SIZE);
             }
         }
 
