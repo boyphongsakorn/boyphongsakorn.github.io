@@ -8,8 +8,8 @@
     <script defer src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
-    <!-- Red Announcement Box -->
-    <div class="bg-red-600 text-white px-4 py-3 text-center font-medium shadow-md">
+    <!-- Red Announcement Box (hidden for now) -->
+    <div class="bg-red-600 text-white px-4 py-3 text-center font-medium shadow-md hidden">
         <span class="text-lg">🎉 New Project or Announcement Here! 🎉</span>
     </div>
     
@@ -18,6 +18,13 @@
         <p class="text-gray-600 mb-6">ขี้เกียจทำละเว็บ กดตาม ul list ข้างล่างละกัน</p>
         
         <ul class="space-y-3">
+            <!-- Red Announcement Box as first list item -->
+            <li>
+                <div class="bg-red-600 text-white p-4 rounded-lg shadow-sm border border-red-700">
+                    <span class="text-lg font-medium">🎉 New Project or Announcement Here! 🎉</span>
+                </div>
+            </li>
+            
             <li id="twitchbanneralert" class="hidden">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <!-- Left column: 2 stacked boxes -->
