@@ -19,14 +19,14 @@
         
         <ul class="space-y-3">
             <!-- Red Announcement Box as first list item -->
-            <li>
+            <li id="announcementBox">
                 <a href="https://twitch.tv/boyalone99" class="block" target="_blank" rel="noopener noreferrer">
                     <div class="bg-red-600 text-white rounded-lg shadow-sm border border-red-700 flex items-center justify-between">
                         <div class="flex-1 p-4">
                             <span class="inline-block bg-yellow-400 text-red-900 text-xs font-bold px-2 py-1 rounded mb-2">NEW</span>
                             <div class="text-lg font-medium">ใช้คำสั่ง !askai ใน Twitch Chat</div>
                         </div>
-                        <img src="https://res.cloudinary.com/dstnfzzu4/image/upload/v1767518498/export-1767517703484-ezgif.com-optimize_paw4ge.gif" alt="Announcement" class="w-64 h-64 rounded-lg ml-4 flex-shrink-0">
+                        <img id="announcementImage" src="https://res.cloudinary.com/dstnfzzu4/image/upload/v1767518498/export-1767517703484-ezgif.com-optimize_paw4ge.gif" alt="Announcement" class="w-64 h-64 rounded-lg ml-4 flex-shrink-0 transition-all duration-300">
                     </div>
                 </a>
             </li>
@@ -1129,6 +1129,48 @@
     
     // Initialize work progress when page loads
     updateWorkProgress();
+
+    // Announcement Box Image Resize on Scroll and Timer
+    (function() {
+        const announcementImage = document.getElementById('announcementImage');
+        const announcementBox = document.getElementById('announcementBox');
+        
+        if (!announcementImage || !announcementBox) return;
+
+        // Define size classes as constants for maintainability
+        const LARGE_SIZE = ['w-64', 'h-64'];
+        const SMALL_SIZE = ['w-32', 'h-32'];
+
+        let imageResized = false;
+
+        function resizeImage() {
+            if (!imageResized) {
+                imageResized = true;
+                announcementImage.classList.remove(...LARGE_SIZE);
+                announcementImage.classList.add(...SMALL_SIZE);
+            }
+        }
+
+        function handleScroll() {
+            const boxRect = announcementBox.getBoundingClientRect();
+            const boxBottom = boxRect.bottom;
+            
+            // Check if user has scrolled past the announcement box (box is above viewport)
+            // Once changed to small size, it stays that way
+            if (boxBottom < 0) {
+                resizeImage();
+            }
+        }
+
+        // Add scroll event listener with passive flag for better performance
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Initial check in case page loads in a scrolled position
+        handleScroll();
+
+        // Also resize image after 20 seconds
+        setTimeout(resizeImage, 20000);
+    })();
     </script>
 </body>
 </html>
