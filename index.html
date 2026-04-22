@@ -945,7 +945,7 @@
                 norm.sort((a, b) => (b.count || 0) - (a.count || 0));
 
                 // Update UI
-                if (dateEl) dateEl.textContent = displayedDate ? String(displayedDate) : 'ไม่ทราบวันที่ถัดไป';
+                if (dateEl) dateEl.textContent = displayedDate ? convertThaiDate(displayedDate) : 'ไม่ทราบวันที่ถัดไป';
                 if (topEl) {
                     if (!norm.length) {
                         topEl.innerHTML = '<div class="text-gray-500">ไม่มีข้อมูลหมายเลขเด่น</div>';
@@ -1230,6 +1230,20 @@
         // Also resize image after 20 seconds
         setTimeout(resizeImage, 20000);
     })();
+    
+    function convertThaiDate(dateStr) {
+        const day = parseInt(dateStr.substring(0, 2), 10);
+        const month = parseInt(dateStr.substring(2, 4), 10);
+        const year = parseInt(dateStr.substring(4, 8), 10);
+
+        const thaiMonths = [
+            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
+            "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม",
+            "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+        ];
+
+        return `${day} ${thaiMonths[month - 1]} ${year}`;
+    }
     </script>
 </body>
 </html>
