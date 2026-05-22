@@ -622,7 +622,8 @@
             
             // Create and add image (thumbnail)
             const img = document.createElement('img');
-            img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+            // img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+            img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
             img.alt = 'Loading...';
             img.className = 'w-full h-40 object-cover';
             img.onerror = function() { this.style.display = 'none'; };
