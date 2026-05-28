@@ -617,21 +617,20 @@
             link.href = `https://store.steampowered.com/app/${appId}`;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.className = 'flex flex-row items-center gap-2 p-2';
+            link.className = 'flex flex-row items-stretch gap-2 p-2';
 
-            // Image on the left
+            // Image stretches to match text height
             const img = document.createElement('img');
             img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
             img.alt = '';
-            img.className = 'rounded flex-shrink-0 object-cover';
+            img.className = 'rounded flex-shrink-0 object-cover self-stretch';
             img.style.width = '92px';
-            img.style.height = '43px'; // 460x215 = ~2.14:1 ratio
             img.onerror = function() { this.style.display = 'none'; };
             link.appendChild(img);
 
             // Name + price stacked on the right
             const infoDiv = document.createElement('div');
-            infoDiv.className = 'flex flex-col min-w-0';
+            infoDiv.className = 'flex flex-col justify-center min-w-0';
 
             const title = document.createElement('div');
             title.className = 'text-xs text-gray-700 font-medium truncate';
