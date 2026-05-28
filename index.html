@@ -328,7 +328,7 @@
             <h2 class="text-2xl font-bold mb-4 text-gray-800">Steam Wishlist</h2>
             <div id="steamWishlistLoading" class="text-gray-600">Loading wishlist...</div>
             <div id="steamWishlistError" class="hidden text-red-600"></div>
-            <div id="steamWishlistContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            <div id="steamWishlistContent" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2"></div>
         </div>
     </div>
 
@@ -612,54 +612,34 @@
             const gameCard = document.createElement('div');
             gameCard.className = 'bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 overflow-hidden';
             gameCard.id = `game-card-${appId}`;
-            
-            // Create link element
+
             const link = document.createElement('a');
             link.href = `https://store.steampowered.com/app/${appId}`;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.className = 'block';
-            
-            // Create and add image (thumbnail)
+            link.className = 'flex items-center gap-2 p-2';
+
+            // Small image on the left
             const img = document.createElement('img');
-            // img.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
             img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
-            img.alt = 'Loading...';
-            img.className = 'w-full h-40 object-cover';
+            img.alt = '';
+            img.className = 'w-16 h-10 object-cover rounded flex-shrink-0';
             img.onerror = function() { this.style.display = 'none'; };
             link.appendChild(img);
-            
-            // Create content div with game name and price
-            const contentDiv = document.createElement('div');
-            contentDiv.className = 'p-3';
-            
-            // Create a flex container for title and price
-            const titlePriceContainer = document.createElement('div');
-            titlePriceContainer.className = 'flex items-center justify-between gap-2';
-            
-            // Create title with loading text
-            const title = document.createElement('h3');
-            title.className = 'font-medium text-gray-400 truncate flex-1';
-            title.textContent = 'Loading...';
-            title.id = `game-title-${appId}`;
-            titlePriceContainer.appendChild(title);
-            
-            // Create price container with loading text
+
+            // Price on the right
             const priceContainer = document.createElement('div');
-            priceContainer.className = 'text-right flex-shrink-0';
+            priceContainer.className = 'flex-1 min-w-0';
             priceContainer.id = `game-price-${appId}`;
-            
+
             const price = document.createElement('div');
-            price.className = 'text-sm text-gray-400';
-            price.textContent = 'Loading...';
+            price.className = 'text-xs text-gray-400';
+            price.textContent = '...';
             priceContainer.appendChild(price);
-            
-            titlePriceContainer.appendChild(priceContainer);
-            contentDiv.appendChild(titlePriceContainer);
-            
-            link.appendChild(contentDiv);
+
+            link.appendChild(priceContainer);
             gameCard.appendChild(link);
-            
+
             return gameCard;
         }
 
@@ -785,7 +765,7 @@
 
                 // Phase 1: Quick display - show last 3 games from wishlist
                 const totalGames = data.response.items.length;
-                const initialGames = data.response.items.slice(Math.max(0, totalGames - 3));
+                const initialGames = data.response.items.slice(Math.max(0, totalGames - 6));
                 
                 // Immediately show game cards with images and loading text
                 initialGames.forEach(item => {
@@ -812,7 +792,7 @@
                             .sort((a, b) => b.discountValue - a.discountValue);
                         
                         // Get top 3 most discounted games
-                        const top3Discounted = validDetails.slice(0, 3);
+                        const top3Discounted = validDetails.slice(0, 6);
                         
                         // Check if top 3 discounted are different from initial display
                         const initialAppIds = initialGames.map(g => g.appid);
