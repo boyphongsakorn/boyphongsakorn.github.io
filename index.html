@@ -328,7 +328,7 @@
             <h2 class="text-2xl font-bold mb-4 text-gray-800">Steam Wishlist</h2>
             <div id="steamWishlistLoading" class="text-gray-600">Loading wishlist...</div>
             <div id="steamWishlistError" class="hidden text-red-600"></div>
-            <div id="steamWishlistContent" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2"></div>
+            <div id="steamWishlistContent" class="grid grid-cols-3 gap-3"></div>
         </div>
     </div>
 
@@ -617,27 +617,37 @@
             link.href = `https://store.steampowered.com/app/${appId}`;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.className = 'flex items-center gap-2 p-2';
+            link.className = 'flex flex-row items-center gap-2 p-2';
 
-            // Small image on the left
+            // Image on the left
             const img = document.createElement('img');
             img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
             img.alt = '';
-            img.className = 'w-16 h-10 object-cover rounded flex-shrink-0';
+            img.className = 'w-20 h-12 object-cover rounded flex-shrink-0';
             img.onerror = function() { this.style.display = 'none'; };
             link.appendChild(img);
 
-            // Price on the right
+            // Name + price stacked on the right
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'flex flex-col min-w-0';
+
+            const title = document.createElement('div');
+            title.className = 'text-xs text-gray-700 font-medium truncate';
+            title.textContent = '...';
+            title.id = `game-title-${appId}`;
+            infoDiv.appendChild(title);
+
             const priceContainer = document.createElement('div');
-            priceContainer.className = 'flex-1 min-w-0';
+            priceContainer.className = 'mt-1';
             priceContainer.id = `game-price-${appId}`;
 
             const price = document.createElement('div');
             price.className = 'text-xs text-gray-400';
             price.textContent = '...';
             priceContainer.appendChild(price);
+            infoDiv.appendChild(priceContainer);
 
-            link.appendChild(priceContainer);
+            link.appendChild(infoDiv);
             gameCard.appendChild(link);
 
             return gameCard;
