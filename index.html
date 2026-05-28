@@ -617,15 +617,16 @@
             link.href = `https://store.steampowered.com/app/${appId}`;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.className = 'flex flex-row items-stretch gap-2 p-2';
+            link.className = 'flex flex-row items-center gap-2 p-2';
 
             // Image stretches to match text height, width follows Steam 2.14:1 ratio
             const img = document.createElement('img');
             img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
             img.alt = '';
-            img.className = 'rounded flex-shrink-0 object-cover self-stretch';
-            img.style.aspectRatio = '460 / 215';  // Steam banner exact ratio
-            img.style.width = 'auto';             // width follows the aspect ratio + height
+            img.className = 'rounded flex-shrink-0 object-cover';
+            img.style.aspectRatio = '460 / 215';
+            img.style.width = '100px';
+            img.style.height = 'auto';
             img.onerror = function() { this.style.display = 'none'; };
             link.appendChild(img);
 
