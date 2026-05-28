@@ -623,7 +623,9 @@
             const img = document.createElement('img');
             img.src = `https://img.gs/fhcphvsghs/quality=low/https://steam-header-proxy.vercel.app/header?appid=${appId}`;
             img.alt = '';
-            img.className = 'w-20 h-12 object-cover rounded flex-shrink-0';
+            img.className = 'rounded flex-shrink-0 object-cover';
+            img.style.width = '92px';
+            img.style.height = '43px'; // 460x215 = ~2.14:1 ratio
             img.onerror = function() { this.style.display = 'none'; };
             link.appendChild(img);
 
