@@ -626,7 +626,7 @@
             img.className = 'rounded flex-shrink-0 object-cover self-stretch';
             img.style.aspectRatio = '460 / 215';  // Steam banner exact ratio
             img.style.width = 'auto';             // width follows the aspect ratio + height
-            img.onerror = function() { this.style.display = 'none'; };
+            // img.onerror = function() { this.style.display = 'none'; };
 
             // Name + price stacked on the right
             const infoDiv = document.createElement('div');
