@@ -19,7 +19,7 @@
         
         <ul class="space-y-3">
             <!-- Red Announcement Box as first list item -->
-            <li id="announcementBox">
+            <!-- <li id="announcementBox">
                 <a href="https://twitch.tv/boyalone99" class="block" target="_blank" rel="noopener noreferrer">
                     <div class="bg-red-600 text-white rounded-lg shadow-sm border border-red-700 flex items-center justify-between">
                         <div class="flex-1 p-4">
@@ -27,6 +27,23 @@
                             <div class="text-lg font-medium">คำสั่ง !askai ใน Twitch Chat ถามคำถามแล้วให้ ai ตอบ</div>
                         </div>
                         <img id="announcementImage" src="https://res.cloudinary.com/dstnfzzu4/image/upload/v1767518498/export-1767517703484-ezgif.com-optimize_paw4ge.gif" alt="Announcement" class="w-64 h-64 rounded-lg ml-4 flex-shrink-0 transition-all duration-300">
+                    </div>
+                </a>
+            </li> -->
+            <!-- <li>
+                <a href="https://twitch.tv/boyalone99" class="block" target="_blank" rel="noopener noreferrer">
+                    <img src="https://i.ibb.co/4nGF86bF/Chat-GPT-Image-3-2569-16-35-51.png" alt="Announcement" class="w-full rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200">
+                </a>
+            </li> -->
+            <li>
+                <a href="https://twitch.tv/boyalone99" class="block" target="_blank" rel="noopener noreferrer">
+                    <div class="relative">
+                        <img src="https://img.gs/fhcphvsghs/1774x590,crop,quality=low/https://i.ibb.co/HprfFdC8/Chat-GPT-Image-3-2569-16-41-44.png" 
+                            alt="Announcement" 
+                            class="w-full rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200">
+                        <div class="absolute bottom-2 right-2 bg-black/60 text-white text-sm px-3 py-1 rounded-md">
+                            Watch Party Summer Games Fest และ Fortnite Live End Season Event ที่ twitch.tv/boyalone99!
+                        </div>
                     </div>
                 </a>
             </li>
@@ -1217,7 +1234,7 @@
     updateWorkProgress();
 
     // Announcement Box Image Resize on Scroll and Timer
-    (function() {
+    /*(function() {
         const announcementImage = document.getElementById('announcementImage');
         const announcementBox = document.getElementById('announcementBox');
         
@@ -1256,7 +1273,7 @@
 
         // Also resize image after 20 seconds
         setTimeout(resizeImage, 20000);
-    })();
+    })();*/
     
     function convertThaiDate(dateStr) {
         const day = parseInt(dateStr.substring(0, 2), 10);
