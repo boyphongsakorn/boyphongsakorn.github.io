@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ผลสลากกินแบ่งรัฐบาล 1 ส.ค. 2569</title>
+<title>ผลสลากกินแบ่งรัฐบาล</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
@@ -69,37 +69,70 @@
   .pair .value {
     font-size: 28px;
   }
+  .loading {
+    font-family: 'Mali', cursive;
+    font-size: 20px;
+    color: #000;
+    width: 100%;
+    text-align: center;
+  }
 </style>
 </head>
 <body>
 
-<div class="board">
-  <div class="cell main">
-    <div class="label">รางวัลที่ 1</div>
-    <div class="value">932479</div>
-  </div>
-
-  <div class="cell">
-    <div class="label">เลขหน้า 3 ตัว</div>
-    <div class="pair">
-      <div class="value">413</div>
-      <div class="value">672</div>
-    </div>
-  </div>
-
-  <div class="cell">
-    <div class="label">เลขท้าย 3 ตัว</div>
-    <div class="pair">
-      <div class="value">154</div>
-      <div class="value">039</div>
-    </div>
-  </div>
-
-  <div class="cell">
-    <div class="label">เลขท้าย 2 ตัว</div>
-    <div class="value">69</div>
-  </div>
+<div class="board" id="board">
+  <div class="loading">กำลังโหลดข้อมูล...</div>
 </div>
+
+<script>
+  async function loadResults() {
+    const board = document.getElementById('board');
+    try {
+      const res = await fetch('https://lotapi.pwisetthon.com/index3');
+      const data = await res.json();
+
+      const find = (label) => data.find(row => row[0] === label) || [];
+
+      const prize1 = find('รางวัลที่1');
+      const front3 = find('เลขหน้า3ตัว');
+      const back3 = find('เลขท้าย3ตัว');
+      const back2 = find('เลขท้าย2ตัว');
+
+      board.innerHTML = `
+        <div class="cell main">
+          <div class="label">รางวัลที่ 1</div>
+          <div class="value">${prize1[1] || '-'}</div>
+        </div>
+
+        <div class="cell">
+          <div class="label">เลขหน้า 3 ตัว</div>
+          <div class="pair">
+            <div class="value">${front3[1] || '-'}</div>
+            <div class="value">${front3[2] || '-'}</div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="label">เลขท้าย 3 ตัว</div>
+          <div class="pair">
+            <div class="value">${back3[1] || '-'}</div>
+            <div class="value">${back3[2] || '-'}</div>
+          </div>
+        </div>
+
+        <div class="cell">
+          <div class="label">เลขท้าย 2 ตัว</div>
+          <div class="value">${back2[1] || '-'}</div>
+        </div>
+      `;
+    } catch (err) {
+      board.innerHTML = '<div class="loading">ไม่สามารถโหลดข้อมูลได้</div>';
+      console.error(err);
+    }
+  }
+
+  loadResults();
+</script>
 
 </body>
 </html>
