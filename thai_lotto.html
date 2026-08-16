@@ -88,7 +88,7 @@
   async function loadResults() {
     const board = document.getElementById('board');
     try {
-      const res = await fetch('https://lotapi.pwisetthon.com/index3');
+      const res = await fetch('https://anywhere.pwisetthon.com/https://lotapi.pwisetthon.com/index3');
       const data = await res.json();
 
       const find = (label) => data.find(row => row[0] === label) || [];
@@ -132,6 +132,7 @@
   }
 
   loadResults();
+  setInterval(loadResults, 30000);
 </script>
 
 </body>
